@@ -31,7 +31,7 @@ public class LoginFragment extends Fragment {
     String usernameStr;
     private static final int QUERY_LOADER = 100;
     private EditText username;
-    private int user_id;
+    //private int user_id;
 
     public LoginFragment() {
     }
@@ -101,7 +101,7 @@ public class LoginFragment extends Fragment {
                 if(data.moveToFirst()) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra(Constants.EXTRA_USERNAME, usernameStr);
-                    intent.putExtra(Constants.EXTRA_USERID, user_id);
+                    intent.putExtra(Constants.EXTRA_USERID, data.getInt(0));
                     startActivity(intent);
                 }
                 else{

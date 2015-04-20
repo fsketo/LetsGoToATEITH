@@ -55,7 +55,7 @@ public class MainFragment extends Fragment{
         if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
             username = intent.getStringExtra(Constants.EXTRA_USERNAME);
             userId=intent.getIntExtra(Constants.EXTRA_USERID,-1);
-            getActivity().setTitle(R.string.loginTitle+username);
+            getActivity().setTitle(getString(R.string.title_activity_main)+" "+username+" "+userId);
         }
 
         ownAcarButton =(Button)rootView.findViewById(R.id.ownAcar);

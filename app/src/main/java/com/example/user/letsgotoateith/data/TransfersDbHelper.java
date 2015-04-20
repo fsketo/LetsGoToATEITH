@@ -59,7 +59,7 @@ public class TransfersDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_USERS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_REG_CARS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TRANSP_TABLE);
-        sqLiteDatabase.execSQL("INSERT INTO USERS values(ft,0,IT,001,ft@teithe.gr,ft,Fotis T");
+        //sqLiteDatabase.execSQL("INSERT INTO USERS values(ft,0,IT,001,ftteithe.gr,ft,FotisT);");
     }
 
     @Override
