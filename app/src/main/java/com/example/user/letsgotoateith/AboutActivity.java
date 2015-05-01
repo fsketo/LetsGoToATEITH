@@ -1,22 +1,19 @@
 package com.example.user.letsgotoateith;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-public class SearchActivity extends ActionBarActivity {
+public class AboutActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_about);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SearchFragment())
+                    .add(R.id.container, new AboutFragment())
                     .commit();
         }
     }
@@ -25,7 +22,7 @@ public class SearchActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
 
@@ -37,16 +34,12 @@ public class SearchActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            SharedPreferences prefs=getApplication().getSharedPreferences("session", Context.MODE_PRIVATE);
-            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-            prefs.edit().putInt(getString(R.string.pref_id_key),-1);
-            prefs.edit().putString(getString(R.string.pref_username_key),"-1");
-            prefs.edit().apply();
-            finish();
+        if (id == R.id.action_settings) {
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

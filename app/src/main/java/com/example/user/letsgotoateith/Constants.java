@@ -6,4 +6,5 @@ package com.example.user.letsgotoateith;
 public class Constants {
     public static final String EXTRA_USERID="USERID***";
     public static final String EXTRA_USERNAME="USERNAME***";
+    public static final String EXTRA_URI="URI***";
 }

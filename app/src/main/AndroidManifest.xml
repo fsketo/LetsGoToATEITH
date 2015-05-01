@@ -19,7 +19,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
-
         </activity>
         <activity
             android:name=".OwnCarActivity"
@@ -49,6 +48,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.user.letsgotoateith.MainActivity" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".LoginActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.user.letsgotoateith.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".ResultsActivity"
+            android:label="@string/title_activity_results"
+            android:parentActivityName=".SearchActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.user.letsgotoateith.SearchActivity" />
         </activity>
     </application>
 

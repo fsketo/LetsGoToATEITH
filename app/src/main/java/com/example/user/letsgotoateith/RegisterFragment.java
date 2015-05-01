@@ -1,7 +1,9 @@
 package com.example.user.letsgotoateith;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,10 +72,8 @@ public class RegisterFragment extends Fragment {
                 else if(emailS.trim().isEmpty()){
                     email.setText("Insert Email");
                     email.setBackgroundColor( -65536);
-                    System.out.println(emailS);
                 }
                 else if(!emailS.trim().contains("@teithe.gr")){
-                    System.out.println(emailS);
                     email.setText("You can only use your Teithe email address");
                     email.setBackgroundColor( -65536);
                 }
@@ -101,6 +101,13 @@ public class RegisterFragment extends Fragment {
                         }
                     }.execute(uri,mNewValues);
 
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(R.string.registerPopUp)
+                            .setPositiveButton(R.string.dialog_resume, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    getActivity().finish();
+                                }
+                            }).show();
                 }
             }
 

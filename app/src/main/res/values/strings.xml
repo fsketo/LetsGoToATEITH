@@ -24,7 +24,7 @@
     <string name="submitButtonText">Submit</string>
     <string name="area">Select area</string>
     <string name="ownAcarPopUp">Congratulations! Your car has been registered!</string>
-    <string name="dialog_ownAcarPopUp_resume">Continue</string>
+    <string name="dialog_resume">Continue</string>
     <string-array name="peopleSpinner">
         <item>1</item>
         <item>2</item>
@@ -73,4 +73,16 @@
     <string name="signUp">Sign up</string>
     <string name="areaText">Choose your area of residence</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="insideAboutTextTitle">About this app</string>
+    <string name="insideAboutText1">This app is developed entirely by Tsalampounis Fotis.</string>
+    <string name="insideAboutText2">For any suggestions or comments please do not hesitate to contact him at fsketo@gmail.com</string>
+    <string name="insideAboutText3">The launcher icon of this app consists of two different images.</string>
+    <string name="insideAboutText4">The person icon credit: Icon made by Freepik from www.flaticon.com is licensed under Creative Commons BY CC BY 3.0</string>
+    <string name="insideAboutText5">The car icon is designed by Freepik.com</string>
+    <string name="pref_username_key">pref_username</string>
+    <string name="pref_id_key">pref_id</string>
+    <string name="action_logout">Logout</string>
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="registerPopUp">User created successfully! Welcome in a world without busses!</string>
 </resources>

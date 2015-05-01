@@ -167,34 +167,45 @@ public class TransfersContract {
                     .appendPath(Integer.toString(area)).build();
         }
 
+        public static Uri buildSearchRegUri(int day,int depTime,int retTime,int freq,int area) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(Integer.toString(day))
+                    .appendPath(Integer.toString(depTime))
+                    .appendPath(Integer.toString(retTime))
+                    .appendPath(Integer.toString(freq))
+                    .appendPath(Integer.toString(area)).build();
+        }
 
-        public static int getIDFromUri(Uri uri) {
+
+//        public static int getIDFromUri(Uri uri) {
+//            return Integer.parseInt(uri.getPathSegments().get(1));
+//        }
+//        public static int getPeopleFromUri(Uri uri) {
+//            return Integer.parseInt(uri.getPathSegments().get(2));
+//        }
+
+        public static int getDayFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(1));
         }
-        public static int getPeopleFromUri(Uri uri) {
+        public static int getDepFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(2));
         }
-        public static int getDayFromUri(Uri uri) {
+        public static int getRetFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(3));
         }
-        public static int getDepFromUri(Uri uri) {
+        public static int getFreqFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(4));
         }
-        public static int getRetFromUri(Uri uri) {
+        public static int getAreaFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(5));
         }
-        public static int getFreqFromUri(Uri uri) {
+        public static int getDriverIDFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(6));
         }
-        public static int getDriverIDFromUri(Uri uri) {
+        public static int getPeopleRegFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(7));
         }
-        public static int getPeopleRegFromUri(Uri uri) {
-            return Integer.parseInt(uri.getPathSegments().get(8));
-        }
-        public static String getAreaFromUri(Uri uri) {
-            return uri.getPathSegments().get(9);
-        }
+
     }
 
     public static final class TransportsEntry implements BaseColumns {

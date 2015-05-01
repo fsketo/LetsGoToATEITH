@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,10 +40,7 @@ public class MainFragment extends Fragment{
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +50,7 @@ public class MainFragment extends Fragment{
         if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
             username = intent.getStringExtra(Constants.EXTRA_USERNAME);
             userId=intent.getIntExtra(Constants.EXTRA_USERID,-1);
-            getActivity().setTitle(getString(R.string.title_activity_main)+" "+username+" "+userId);
+            getActivity().setTitle(getString(R.string.title_activity_main)+" "+username);
         }
 
         ownAcarButton =(Button)rootView.findViewById(R.id.ownAcar);

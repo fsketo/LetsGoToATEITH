@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class OwnACarFragment extends Fragment{
                 public void onClick(View v) {
                     new AlertDialog.Builder(getActivity())
                             .setMessage(R.string.ownAcarPopUp)
-                            .setPositiveButton(R.string.dialog_ownAcarPopUp_resume, new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.dialog_resume, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Intent intent = getActivity().getIntent();
                                     if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
@@ -84,6 +85,6 @@ public class OwnACarFragment extends Fragment{
         mNewValues.put(TransfersContract.CarsEntry.COLUMN_PEOPLE_REG, 0);
         mNewValues.put(TransfersContract.CarsEntry.COLUMN_AREA, area);
         Context context=getActivity();
-        context.getContentResolver().insert(uri,mNewValues);
+        Log.v("Insert URI", "Insert URI: " + context.getContentResolver().insert(uri, mNewValues));
     }
 }

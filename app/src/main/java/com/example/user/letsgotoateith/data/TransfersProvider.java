@@ -34,9 +34,14 @@ public class TransfersProvider extends ContentProvider {
 
         //reg_cars show only entries with not all people found
         sQueryBuilder.setTables(
-                TransfersContract.CarsEntry.TABLE_NAME //+ " WHERE " +
-                //                TransfersContract.CarsEntry.COLUMN_PEOPLE_REG +
-                //               " != " + TransfersContract.CarsEntry.COLUMN_PEOPLE
+                TransfersContract.CarsEntry.TABLE_NAME+
+                        " INNER JOIN "+
+                        TransfersContract.UsersEntry.TABLE_NAME+
+                        " ON "+
+                        TransfersContract.UsersEntry.TABLE_NAME+"."+
+                        TransfersContract.UsersEntry._ID+" = "+
+                        TransfersContract.CarsEntry.TABLE_NAME+"."+
+                        TransfersContract.CarsEntry.COLUMN_DRIVER_ID
         );
     }
 
@@ -176,16 +181,19 @@ public class TransfersProvider extends ContentProvider {
     }
 
     private static final String sSearchCar =
-            TransfersContract.CarsEntry.TABLE_NAME +
+                    TransfersContract.CarsEntry.TABLE_NAME +
                     "." + TransfersContract.CarsEntry.COLUMN_DAY+ " = ? AND " +
                     TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_DEP_TIME + " = ? "+
+                    "."+TransfersContract.CarsEntry.COLUMN_DEP_TIME + " = ? AND "+
                     TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_RET_TIME + " = ? "+
+                    "."+TransfersContract.CarsEntry.COLUMN_RET_TIME + " = ? AND "+
                     TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_FREQ + " = ? "+
+                    "."+TransfersContract.CarsEntry.COLUMN_FREQ + " = ? AND "+
                     TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_AREA + " = ? ";
+                    "."+TransfersContract.CarsEntry.COLUMN_AREA + " = ? AND "+
+                    TransfersContract.CarsEntry.TABLE_NAME +
+                    "."+TransfersContract.CarsEntry.COLUMN_PEOPLE+" != "+
+                    TransfersContract.CarsEntry.COLUMN_PEOPLE_REG;
 
     private static final String sGetTransport =
             TransfersContract.TransportsEntry.TABLE_NAME +
@@ -202,12 +210,12 @@ public class TransfersProvider extends ContentProvider {
         int dep = TransfersContract.CarsEntry.getDepFromUri(uri);
         int ret=TransfersContract.CarsEntry.getRetFromUri(uri);
         int freq=TransfersContract.CarsEntry.getFreqFromUri(uri);
-        String area=TransfersContract.CarsEntry.getAreaFromUri(uri);
+        int area=TransfersContract.CarsEntry.getAreaFromUri(uri);
 
         return sQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sSearchCar,
-                new String[]{String.valueOf(day),String.valueOf(dep),String.valueOf(ret),String.valueOf(freq),area},
+                new String[]{String.valueOf(day),String.valueOf(dep),String.valueOf(ret),String.valueOf(freq),String.valueOf(area)},
                 null,
                 null,
                 sortOrder
