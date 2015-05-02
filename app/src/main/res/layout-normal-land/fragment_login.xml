@@ -10,6 +10,16 @@
         android:layout_height="fill_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/main_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,13 +66,13 @@
             android:layout_marginRight="50dp"
             android:editable="false" />
 
-        <Button
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
             android:text="@string/loginButtonText"
-            android:id="@+id/loginButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,6 +96,7 @@
             android:textColor="#006bff"
             android:layout_marginBottom="15dp" />
 
+    </LinearLayout>
     </LinearLayout>
 
 

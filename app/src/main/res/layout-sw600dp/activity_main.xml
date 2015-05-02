@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<fragment
-    android:id="@+id/mainFragment"
-    android:name="com.example.user.letsgotoateith.MainFragment"
-    android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="2"
-        />
-    <FrameLayout
-        android:layout_width="0dp"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:id="@+id/fragmentContainer"/>
+        android:id="@+id/main_contentTwoPane">
+
+        <fragment
+            android:id="@+id/mainFragment"
+            android:name="com.example.user.letsgotoateith.MainFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:id="@+id/fragmentContainer"/>
+    </LinearLayout>
 </LinearLayout>

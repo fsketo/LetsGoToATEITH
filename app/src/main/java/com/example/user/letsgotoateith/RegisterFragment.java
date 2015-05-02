@@ -1,21 +1,23 @@
 package com.example.user.letsgotoateith;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.widgets.Dialog;
 
 /**
  * Created by user on 19/4/2015.
@@ -34,17 +36,21 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
+        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
+        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fullname=(EditText)rootView.findViewById(R.id.fullname);
         username=(EditText)rootView.findViewById(R.id.username);
         school=(EditText)rootView.findViewById(R.id.school);
         email=(EditText)rootView.findViewById(R.id.email);
         facebookLink=(EditText)rootView.findViewById(R.id.facebookLink);
         area=(Spinner)rootView.findViewById(R.id.areaSpinner);
-        Button signUp=(Button) rootView.findViewById(R.id.signUpButton);
+        ButtonRectangle signUp=(ButtonRectangle) rootView.findViewById(R.id.signUpButton);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                boolean flag=true;
                 usernameS= username.getText().toString();
                 areaS=area.getSelectedItemPosition();
                 fullnameS=fullname.getText().toString();
@@ -58,26 +64,32 @@ public class RegisterFragment extends Fragment {
                 }
 
                 if(usernameS.trim().isEmpty()){
-                    username.setText("Insert Username");
-                    username.setBackgroundColor( -65536);
+                    username.setHint("Insert Username");
+                    username.setBackgroundColor(-65536);
+                    flag=false;
                 }
-                else if(fullnameS.trim().isEmpty()){
-                    fullname.setText("Insert Full name");
-                    fullname.setBackgroundColor( -65536);
+                if(fullnameS.trim().isEmpty()){
+                    fullname.setHint("Insert Full name");
+                    fullname.setBackgroundColor(-65536);
+                    flag=false;
                 }
-                else if(schoolS.trim().isEmpty()){
-                    school.setText("Insert School");
-                    school.setBackgroundColor( -65536);
+                if(schoolS.trim().isEmpty()){
+                    school.setHint("Insert School");
+                    school.setBackgroundColor(-65536);
+                    flag=false;
                 }
-                else if(emailS.trim().isEmpty()){
-                    email.setText("Insert Email");
-                    email.setBackgroundColor( -65536);
+                if(emailS.trim().isEmpty()){
+                    email.setHint("Insert Email");
+                    email.setBackgroundColor(-65536);
+                    flag=false;
                 }
                 else if(!emailS.trim().contains("@teithe.gr")){
-                    email.setText("You can only use your Teithe email address");
+                    email.setHint("You can only use your Teithe email address");
                     email.setBackgroundColor( -65536);
+                    flag=false;
                 }
-                else{
+
+                if(flag){
                     Uri uri= TransfersContract.UsersEntry.buildUserUri();
                     ContentValues mNewValues = new ContentValues();
 
@@ -99,19 +111,46 @@ public class RegisterFragment extends Fragment {
                             context.getContentResolver().insert((Uri)params[0],(ContentValues)params[1]);
                             return null;
                         }
-                    }.execute(uri,mNewValues);
+                    }.execute(uri, mNewValues);
 
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(R.string.registerPopUp)
-                            .setPositiveButton(R.string.dialog_resume, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    getActivity().finish();
-                                }
-                            }).show();
+
+                    Dialog dialog = new Dialog(getActivity(), getString(R.string.userRegPopup), getString(R.string.registerPopUp));
+                    dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().finish();
+                        }
+                    });
+
+                    dialog.show();
+
+//                    new AlertDialog.Builder(getActivity())
+//                            .setMessage(R.string.registerPopUp)
+//                            .setPositiveButton(R.string.dialog_resume, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    getActivity().finish();
+//                                }
+//                            }).show();
                 }
             }
 
         });
         return rootView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Utilities.logout(getActivity());
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

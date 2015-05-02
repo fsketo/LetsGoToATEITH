@@ -14,16 +14,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
+import com.gc.materialdesign.views.ButtonRectangle;
 
 public class LoginFragment extends Fragment {
 
@@ -65,7 +67,12 @@ public class LoginFragment extends Fragment {
         }
         Log.v("User ID", "User ID: " + loggedInUserID);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        Button loginButton =(Button)rootView.findViewById(R.id.loginButton);
+
+        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
+        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+        //((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Let's go to ATEITH");
+
+        ButtonRectangle loginButton =(ButtonRectangle)rootView.findViewById(R.id.loginButton);
         TextView aboutButton=(TextView)rootView.findViewById(R.id.aboutText);
         TextView registerButton=(TextView)rootView.findViewById(R.id.registerText);
         username=(EditText)rootView.findViewById(R.id.username);

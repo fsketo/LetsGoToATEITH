@@ -8,12 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -49,6 +53,15 @@ public class ResultsFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_results, container, false);
+            if(!MainActivity.mTwoPane) {
+                Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+                ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+                ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+            else {
+                LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+                ll.removeViewAt(0);
+            }
             final ListView results = (ListView) rootView.findViewById(R.id.resultListview);
             myAdapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,
@@ -91,31 +104,30 @@ public class ResultsFragment extends Fragment {
 
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                    String[] tempTimeSpinnerValues=getResources().getStringArray(R.array.timeSpinner);
-                    String[] tempFreqSpinnerValues=getResources().getStringArray(R.array.freqSpinner);
-                    String[] tempDaySpinnerValues=getResources().getStringArray(R.array.weekDaySpinner);
-                    String[] tempAreaSpinnerValues=getResources().getStringArray(R.array.areaSpinner);
-                    if(data.moveToFirst()) {
-                       do {
-                           temp="Day: "+tempDaySpinnerValues[data.getInt(INDEX_DAY)]+
-                                   " Departure time: "+tempTimeSpinnerValues[data.getInt(INDEX_DEP_TIME)]+
-                                   " Return time: "+tempTimeSpinnerValues[data.getInt(INDEX_RET_TIME)]+
-                                   " Frequency: "+tempFreqSpinnerValues[data.getInt(INDEX_FREQ)]+
-                                   " Area: "+tempAreaSpinnerValues[data.getInt(INDEX_AREA)]+
-                                   " Driver's name: "+data.getString(USERS_INDEX_FULLNAME)+
-                                   " Driver's email: "+data.getString(USERS_INDEX_EMAIL);
+                    String[] tempTimeSpinnerValues = getResources().getStringArray(R.array.timeSpinner);
+                    String[] tempFreqSpinnerValues = getResources().getStringArray(R.array.freqSpinner);
+                    String[] tempDaySpinnerValues = getResources().getStringArray(R.array.weekDaySpinner);
+                    String[] tempAreaSpinnerValues = getResources().getStringArray(R.array.areaSpinner);
+                    if (data.moveToFirst()) {
+                        do {
+                            temp = "Day: " + tempDaySpinnerValues[data.getInt(INDEX_DAY)] +
+                                    " Departure time: " + tempTimeSpinnerValues[data.getInt(INDEX_DEP_TIME)] +
+                                    " Return time: " + tempTimeSpinnerValues[data.getInt(INDEX_RET_TIME)] +
+                                    " Frequency: " + tempFreqSpinnerValues[data.getInt(INDEX_FREQ)] +
+                                    " Area: " + tempAreaSpinnerValues[data.getInt(INDEX_AREA)] +
+                                    " Driver's name: " + data.getString(USERS_INDEX_FULLNAME) +
+                                    " Driver's email: " + data.getString(USERS_INDEX_EMAIL);
 
 
-                           //Toast.makeText(getActivity(),temp,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity(),temp,Toast.LENGTH_LONG).show();
 
-                           Log.v("Query Result","Query Result: "+temp);
+                            Log.v("Query Result", "Query Result: " + temp);
 
-                           //findName(data.getInt(INDEX_DRIVER_ID));
-                           myAdapter.add(temp);
-                           temp="";
-                       }while(data.moveToNext());
-                    }
-                    else{
+                            //findName(data.getInt(INDEX_DRIVER_ID));
+                            myAdapter.add(temp);
+                            temp = "";
+                        } while (data.moveToNext());
+                    } else {
                         myAdapter.add("No results found");
                     }
 
@@ -130,6 +142,21 @@ public class ResultsFragment extends Fragment {
 
 
         }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Utilities.logout(getActivity());
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 //        private void findName(final int userID) {
 //

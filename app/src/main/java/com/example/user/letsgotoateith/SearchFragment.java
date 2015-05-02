@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
+import com.gc.materialdesign.views.ButtonRectangle;
 
 /**
  * Created by user on 28/4/2015.
@@ -27,7 +31,16 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        Button sub=(Button)rootView.findViewById(R.id.submit_button);
+        if(!MainActivity.mTwoPane) {
+            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+            ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        else {
+            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+            ll.removeViewAt(0);
+        }
+        ButtonRectangle sub=(ButtonRectangle)rootView.findViewById(R.id.submit_button);
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +67,21 @@ public class SearchFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Utilities.logout(getActivity());
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

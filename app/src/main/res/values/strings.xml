@@ -6,7 +6,7 @@
     <string name="loginText">User login page</string>
     <string name="usernameHint">Username:</string>
     <string name="username" />
-    <string name="passwordHint">Password</string>
+    <string name="passwordHint">Password:</string>
     <string name="loginButtonText">Login</string>
     <string name="registerText">Register</string>
     <string name="aboutText">About</string>
@@ -85,4 +85,9 @@
     <string name="action_logout">Logout</string>
     <string name="title_activity_results">ResultsActivity</string>
     <string name="registerPopUp">User created successfully! Welcome in a world without busses!</string>
+    <string name="ownAcarPopUpTitle">Car Registration</string>
+    <string name="ownAcarDataPopUpTitle">Personal data sharing warning</string>
+    <string name="ownAcarDataPopUp">If you choose to procced your account data will become available to any other ATEITH students searching for a ride. Are you sure you want to continue?</string>
+    <string name="dialogCancel">Cancel</string>
+    <string name="userRegPopup">User Registration</string>
 </resources>

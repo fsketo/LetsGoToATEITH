@@ -11,6 +11,16 @@
         android:layout_height="match_parent"
         android:id="@+id/scrollView" >
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/main_content">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -75,13 +85,15 @@
                 android:id="@+id/facebookLink"
                 android:hint="@string/facebook"/>
 
-            <Button
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/signUpButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
                 android:text="@string/signUp"
-                android:id="@+id/signUpButton"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"/>
 
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

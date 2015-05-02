@@ -4,6 +4,17 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/main_content">
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,13 +61,21 @@
         android:layout_marginRight="50dp"
         android:editable="false" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loginButtonText"
-        android:id="@+id/loginButton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/loginButtonText"
+            android:layout_gravity="center_horizontal"/>
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/loginButtonText"-->
+        <!--android:id="@+id/loginButton"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="20dp" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,8 +85,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="56dp"
         android:textSize="20sp"
-        android:textColor="#006bff"
-        android:enabled="true" />
+        android:enabled="true"
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,8 +96,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:textSize="20sp"
-        android:textColor="#006bff"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/colorAccent"  />
 
 </LinearLayout>
 
+</LinearLayout>
