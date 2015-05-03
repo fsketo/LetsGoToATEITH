@@ -3,15 +3,15 @@
     android:layout_width="fill_parent"
     android:orientation="vertical"
     android:id="@+id/toolbar_Linear">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+    <!--<include-->
+        <!--android:id="@+id/toolbar"-->
+        <!--layout="@layout/toolbar" />-->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/main_content">
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:id="@+id/main_content">-->
 
     <LinearLayout
         android:orientation="vertical"
@@ -55,7 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/depTimeSpinner"
-                android:entries="@array/timeSpinner" />
+                android:entries="@array/timeSpinner"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
 
         <LinearLayout
@@ -135,5 +136,5 @@
 
 
     </LinearLayout>
-</LinearLayout>
+<!--</LinearLayout>-->
 </LinearLayout>

@@ -1,20 +1,21 @@
 package com.example.user.letsgotoateith;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.widgets.SnackBar;
 
 /**
  * Created by user on 28/4/2015.
@@ -27,19 +28,25 @@ public class SearchFragment extends Fragment {
     View rootView;
     Uri uri;
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        if(!MainActivity.mTwoPane) {
-            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        else {
-            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
-            ll.removeViewAt(0);
-        }
+//        if(!MainActivity.mTwoPane) {
+//            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+//            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//            ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//        else {
+//            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+//            ll.removeViewAt(0);
+//        }
         ButtonRectangle sub=(ButtonRectangle)rootView.findViewById(R.id.submit_button);
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +78,8 @@ public class SearchFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (MainActivity.mTwoPane)
+            return true;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -78,7 +87,19 @@ public class SearchFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Utilities.logout(getActivity());
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
+                    getActivity().finish();
+                }
+            }).show();
         }
 
         return super.onOptionsItemSelected(item);

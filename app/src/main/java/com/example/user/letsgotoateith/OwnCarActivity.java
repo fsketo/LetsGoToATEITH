@@ -2,10 +2,12 @@ package com.example.user.letsgotoateith;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 
-public class OwnCarActivity extends ActionBarActivity {
+public class OwnCarActivity extends ActionBarActivity{
 
 
     @Override
@@ -23,26 +25,48 @@ public class OwnCarActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_own_car, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        Log.v("Own a car menu created","Own a car menu created");
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+//        if (id == R.id.action_logout) {
+//            SnackBar snackBar = new SnackBar(get, "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    SharedPreferences prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
+//                    prefs.edit().putInt(context.getString(R.string.pref_id_key), -1);
+//                    prefs.edit().putString(context.getString(R.string.pref_username_key), "-1");
+//                    prefs.edit().commit();
+//                    Log.v("User ID", "#####********User ID:" + prefs.getInt(context.getString(R.string.pref_id_key), -5555));
+//                    context.finish();
+//                }
+//            });
+//            snackBar.show();
+//        }
+        return super.onOptionsItemSelected(item);
+    }
+
 //    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
+//    public boolean onOptionsItemSelected(MenuItem item){
 //        // Handle action bar item clicks here. The action bar will
 //        // automatically handle clicks on the Home/Up button, so long
 //        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_logout) {
-//            SharedPreferences prefs=getApplication().getSharedPreferences("session", Context.MODE_PRIVATE);
-//            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
-//            prefs.edit().putInt(getString(R.string.pref_id_key),-1);
-//            prefs.edit().putString(getString(R.string.pref_username_key),"-1");
-//            prefs.edit().commit();
-//            finish();
-//        }
+////        int id = item.getItemId();
+////
+////        //noinspection SimplifiableIfStatement
+////        if (id == R.id.action_logout) {
+////            SharedPreferences prefs=getApplication().getSharedPreferences("session", Context.MODE_PRIVATE);
+////            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+////            prefs.edit().putInt(getString(R.string.pref_id_key),-1);
+////            prefs.edit().putString(getString(R.string.pref_username_key),"-1");
+////            prefs.edit().commit();
+////            finish();
+////        }
 //
 //        return super.onOptionsItemSelected(item);
 //    }

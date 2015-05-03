@@ -3,16 +3,19 @@ package com.example.user.letsgotoateith;
 /**
  * Created by user on 2/5/2015.
  */
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<String> mDataset;
+    private int[] imgIds={R.drawable.ic_own_a_car,R.drawable.ic_find_a_car,R.drawable.ic_manage_transp};
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -20,10 +23,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView txt;
+        public ImageView img;
 
         public ViewHolder(View v) {
             super(v);
             txt = (TextView) v.findViewById(R.id.firstLine);
+            img=(ImageView)v.findViewById(R.id.icon);
         }
     }
 
@@ -61,6 +66,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final String name = mDataset.get(position);
         holder.txt.setText(mDataset.get(position));
+        holder.img.setImageResource(imgIds[position]);
         holder.txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

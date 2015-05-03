@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
 
-public class ResultsActivity extends ActionBarActivity {
+public class ResultsActivity extends ActionBarActivity implements ResultsFragment.Callback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,13 @@ public class ResultsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_results, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onItemSelected(String text) {
+
     }
 
 //    @Override

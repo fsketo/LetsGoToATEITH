@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,9 +34,9 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
-        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
-        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
+//        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fullname=(EditText)rootView.findViewById(R.id.fullname);
         username=(EditText)rootView.findViewById(R.id.username);
         school=(EditText)rootView.findViewById(R.id.school);

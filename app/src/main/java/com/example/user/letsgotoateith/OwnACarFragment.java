@@ -3,22 +3,21 @@ package com.example.user.letsgotoateith;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
+import com.gc.materialdesign.widgets.SnackBar;
 
 /**
  * Created by user on 18/4/2015.
@@ -28,25 +27,37 @@ public class OwnACarFragment extends Fragment{
         private int userId;
         private String username;
         View rootView;
+//        Callback Listener;
+//
+//        public void setListener(Callback listener) {
+//            Listener = listener;
+//        }
+
         public OwnACarFragment() {
         }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             rootView = inflater.inflate(R.layout.fragment_own_car, container, false);
-            if(!MainActivity.mTwoPane) {
-                Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-                ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-                //((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                Log.v("Two pane","Two pane: "+MainActivity.mTwoPane);
-            }
-            else{
-                LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
-                ll.removeViewAt(0);
-                Log.v("Two pane","Two pane: "+MainActivity.mTwoPane);
-
-            }
+//            if(!MainActivity.mTwoPane) {
+//                Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+//                ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//                ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                Log.v("Two pane","Two pane: "+MainActivity.mTwoPane);
+//            }
+//            else{
+//                LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+//                ll.removeViewAt(0);
+//                Log.v("Two pane","Two pane: "+MainActivity.mTwoPane);
+//
+//            }
             //((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Let's go to ATEITH");
             ButtonRectangle submitButton=(ButtonRectangle)rootView.findViewById(R.id.submit_button);
 
@@ -148,18 +159,47 @@ public class OwnACarFragment extends Fragment{
         Log.v("Insert URI", "Insert URI: " + context.getContentResolver().insert(uri, mNewValues));
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (MainActivity.mTwoPane)
+            return true;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Log.v("Own a car menu selected","Own a car menu selected");
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Utilities.logout(getActivity());
+            Log.v("logout selected","logout selected");
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
+                    getActivity().finish();
+                }
+            }).show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        inflater.inflate(R.menu.menu_own_car, menu);
+//    }
+
+//    public interface Callback {
+//        /**
+//         * FragmentCallback for when an item has been selected.
+//         */
+//        public void onOptionsItemSelected(MenuItem item, final Activity context);
+//    }
 }

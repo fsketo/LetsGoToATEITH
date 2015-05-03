@@ -4,21 +4,22 @@ package com.example.user.letsgotoateith;
  * Created by user on 14/4/2015.
  */
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
@@ -33,11 +34,15 @@ public class MainFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
 
     public MainFragment() {
     }
 
 
+    static
 
     public interface Callback {
         /**
@@ -48,7 +53,17 @@ public class MainFragment extends Fragment{
 
 
     public void onCreate(Bundle savedInstanceState) {
+        prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+        editor=prefs.edit();
+        int loggedInUserID=prefs.getInt(getString(R.string.pref_id_key),-1);
+        if(loggedInUserID==-1){
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            startActivity(intent);
+            getActivity().finish();
+        }
         super.onCreate(savedInstanceState);
+
 
         setHasOptionsMenu(true);
     }
@@ -60,23 +75,23 @@ public class MainFragment extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         Intent intent = getActivity().getIntent();
-        if (!MainActivity.mTwoPane) {
-            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-            //((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            Log.v("Two pane", "OWN A CAR Two pane: " + MainActivity.mTwoPane);
-        } else {
-            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
-            ll.removeViewAt(0);
-            Log.v("Two pane", "OWN A CAR Two pane: " + MainActivity.mTwoPane);
-        }
+//        if (!MainActivity.mTwoPane) {
+//            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+//            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//            //((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            Log.v("Two pane", "OWN A CAR Two pane: " + MainActivity.mTwoPane);
+//        } else {
+//            LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+//            ll.removeViewAt(0);
+//            Log.v("Two pane", "OWN A CAR Two pane: " + MainActivity.mTwoPane);
+//        }
 
         if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
             username = intent.getStringExtra(Constants.EXTRA_USERNAME);
             userId=intent.getIntExtra(Constants.EXTRA_USERID, -1);
-            if (!MainActivity.mTwoPane) {
-                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_activity_main) + " " + username);
-            }
+//            if (!MainActivity.mTwoPane) {
+//                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_activity_main) + " " + username);
+//            }
         }
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
@@ -199,13 +214,29 @@ public class MainFragment extends Fragment{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+        Log.v("Own a car menu selected","Own a car menu selected");
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Utilities.logout(getActivity());
+            Log.v("logout selected","logout selected");
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getString(R.string.pref_id_key), -5555));
+                    getActivity().finish();
+                }
+            }).show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

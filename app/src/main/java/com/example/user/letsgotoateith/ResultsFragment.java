@@ -1,15 +1,16 @@
 package com.example.user.letsgotoateith;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,8 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -29,6 +31,10 @@ import java.util.regex.Pattern;
  */
 public class ResultsFragment extends Fragment {
 
+//    private ArrayList<String> myDataset=new ArrayList<>();
+//    private RecyclerView mRecyclerView;
+//    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.LayoutManager mLayoutManager;
     private String temp;
     //private String[] detailsTemp=new String[2];
     private static final int QUERY_LOADER = 101;
@@ -49,19 +55,57 @@ public class ResultsFragment extends Fragment {
         public ResultsFragment() {
         }
 
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(String text);
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_results, container, false);
-            if(!MainActivity.mTwoPane) {
-                Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-                ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-                ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-            else {
-                LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
-                ll.removeViewAt(0);
-            }
+//            if(!MainActivity.mTwoPane) {
+//                Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+//                ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//                ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            }
+//            else {
+//                LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.toolbar_Linear);
+//                ll.removeViewAt(0);
+//            }
+
+
+//            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+//            mRecyclerView.setHasFixedSize(true);
+//            // use a linear layout manager
+//            mLayoutManager = new LinearLayoutManager(getActivity());
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//            // specify an adapter
+//            mAdapter = new MyAdapter(myDataset);
+//            ((MyAdapter)mAdapter).setListener(new MyAdapter.Callbacks() {
+//                @Override
+//                public void onClick(String text) {
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType("text/html");
+//                    Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(text);
+//                    while (m.find()) {
+//                        intent.putExtra(Intent.EXTRA_EMAIL, m.group());
+//                    }
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, "Let's go to ATEITH");
+//                    intent.putExtra(Intent.EXTRA_TEXT, text);
+//
+//                    startActivity(Intent.createChooser(intent, "Send Email"));
+//                }
+//            });
+
             final ListView results = (ListView) rootView.findViewById(R.id.resultListview);
             myAdapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,
@@ -124,12 +168,16 @@ public class ResultsFragment extends Fragment {
                             Log.v("Query Result", "Query Result: " + temp);
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-                            myAdapter.add(temp);
+//                            myAdapter.add(temp);
+//                            myDataset.add(temp);
                             temp = "";
                         } while (data.moveToNext());
                     } else {
+                        //myDataset.add("No results found");
                         myAdapter.add("No results found");
                     }
+
+                    //mRecyclerView.setAdapter(mAdapter);
 
                 }
 
@@ -145,6 +193,8 @@ public class ResultsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (MainActivity.mTwoPane)
+            return true;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -152,7 +202,19 @@ public class ResultsFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Utilities.logout(getActivity());
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
+                    NavUtils.navigateUpTo(getActivity(),new Intent(getActivity(), LoginActivity.class));
+                }
+            }).show();
         }
 
         return super.onOptionsItemSelected(item);

@@ -9,13 +9,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +37,7 @@ public class LoginFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs=getActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
+        prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
         editor=prefs.edit();
 //        editor.putInt(getString(R.string.pref_id_key),-1);
 //        editor.putString(getString(R.string.pref_username_key),"-1");
@@ -57,19 +54,19 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int loggedInUserID=prefs.getInt(getString(R.string.pref_id_key),-1);
-        if(loggedInUserID!=-1){
-            String loggedInUsername=prefs.getString(getActivity().getString(R.string.pref_username_key),"-1");
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            intent.putExtra(Constants.EXTRA_USERNAME, loggedInUsername);
-            intent.putExtra(Constants.EXTRA_USERID, loggedInUserID);
-            startActivity(intent);
-        }
-        Log.v("User ID", "User ID: " + loggedInUserID);
+//        int loggedInUserID=prefs.getInt(getString(R.string.pref_id_key),-1);
+//        if(loggedInUserID!=-1){
+//            String loggedInUsername=prefs.getString(getActivity().getString(R.string.pref_username_key),"-1");
+//            Intent intent = new Intent(getActivity(), MainActivity.class);
+//            intent.putExtra(Constants.EXTRA_USERNAME, loggedInUsername);
+//            intent.putExtra(Constants.EXTRA_USERID, loggedInUserID);
+//            startActivity(intent);
+//        }
+        //Log.v("User ID", "User ID: " + loggedInUserID);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
-        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
+//        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
         //((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Let's go to ATEITH");
 
         ButtonRectangle loginButton =(ButtonRectangle)rootView.findViewById(R.id.loginButton);
@@ -105,7 +102,7 @@ public class LoginFragment extends Fragment {
         pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Password not supported yet",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Password not supported yet", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -132,11 +129,13 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra(Constants.EXTRA_USERNAME, usernameStr);
                     intent.putExtra(Constants.EXTRA_USERID, data.getInt(0));
-                    SharedPreferences prefs =PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    editor.putInt(getString(R.string.pref_id_key),data.getInt(0));
+                    editor.putInt(getString(R.string.pref_id_key), data.getInt(0));
                     editor.putString(getString(R.string.pref_username_key), usernameStr);
                     editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     startActivity(intent);
+                    getActivity().finish();
                 }
                 else{
                     username.setText("");

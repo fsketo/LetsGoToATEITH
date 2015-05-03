@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LetsGoToATEITH</string>
+    <string name="app_name">Lets Go To ATEITH</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="loginTitle">Let\'s go to ATEITH</string>
@@ -90,4 +90,5 @@
     <string name="ownAcarDataPopUp">If you choose to procced your account data will become available to any other ATEITH students searching for a ride. Are you sure you want to continue?</string>
     <string name="dialogCancel">Cancel</string>
     <string name="userRegPopup">User Registration</string>
+    <string name="pref_key">session</string>
 </resources>
