@@ -243,6 +243,10 @@ public class TransfersContract {
         public static Uri buildTranspUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static Uri buildTranspUri() {
+            return CONTENT_URI.buildUpon().build();
+        }
     }
 
 

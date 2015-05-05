@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar_Linear">
+    android:id="@+id/toolbar_Linear"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--<include-->
         <!--android:id="@+id/toolbar"-->
@@ -26,13 +27,15 @@
                     android:text="@string/howManyPeople"
                     android:id="@+id/howManyPeople" />
 
+
                 <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/howManyPeopleSpinner"
                     android:spinnerMode="dropdown"
                     android:entries="@array/peopleSpinner"
-                    android:minWidth="50dp"/>
+                    android:minWidth="50dp"
+                    style="@style/Widget.AppCompat.Spinner"/>
             </LinearLayout>
 
             <LinearLayout

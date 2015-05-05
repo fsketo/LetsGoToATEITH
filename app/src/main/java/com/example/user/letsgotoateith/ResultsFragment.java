@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -23,8 +22,8 @@ import android.widget.ListView;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.example.user.letsgotoateith.Utilities.printArray;
 
 /**
  * Created by user on 28/4/2015.
@@ -35,24 +34,27 @@ public class ResultsFragment extends Fragment {
 //    private RecyclerView mRecyclerView;
 //    private RecyclerView.Adapter mAdapter;
 //    private RecyclerView.LayoutManager mLayoutManager;
-    private String temp;
-    //private String[] detailsTemp=new String[2];
+
+    ListView results;
+    private String[][] idTemp;
     private static final int QUERY_LOADER = 101;
+    private static final int INSERT_LOADER = 101;
     //private static final int QUERY_LOADER2 = 102;
     private ArrayAdapter<String> myAdapter;
     // these indices must match the projection
-    private static final int USERS_INDEX_FULLNAME = 13;
-    private static final int USERS_INDEX_EMAIL = 15;
+    private static final int USERS_INDEX_ID = 10;
+    private static final int USERS_INDEX_FULLNAME = 15;
+    private static final int USERS_INDEX_EMAIL = 13;
     private static final int INDEX_DAY = 2;
     private static final int INDEX_DEP_TIME = 3;
     private static final int INDEX_RET_TIME = 4;
     private static final int INDEX_FREQ = 5;
     private static final int INDEX_DRIVER_ID = 7;
     private static final int INDEX_AREA = 8;
+    private static final int INDEX_ID=0;
 
 
-
-        public ResultsFragment() {
+    public ResultsFragment() {
         }
 
     public interface Callback {
@@ -106,7 +108,7 @@ public class ResultsFragment extends Fragment {
 //                }
 //            });
 
-            final ListView results = (ListView) rootView.findViewById(R.id.resultListview);
+            results = (ListView) rootView.findViewById(R.id.resultListview);
             myAdapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1,
                     new ArrayList());
@@ -118,12 +120,16 @@ public class ResultsFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
-                    Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(results.getItemAtPosition(position).toString());
-                    while (m.find()) {
-                        intent.putExtra(Intent.EXTRA_EMAIL, m.group());
-                    }
+                    //Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(results.getItemAtPosition(position).toString());
+                    //while (m.find()) {
+                        //String tmp=m.group();
+                        //Log.v("Email***********", "Email: " + temp[13]);
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{idTemp[position][2]});
+                    //}
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Let's go to ATEITH");
                     intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(results.getItemAtPosition(position).toString()));
+
+                    //registerTransp(position);
 
                     startActivity(Intent.createChooser(intent, "Send Email"));
                 }
@@ -133,7 +139,7 @@ public class ResultsFragment extends Fragment {
         }
 
         private void findCars(){
-
+            Log.v("Search URI", "Search URI :" + getActivity().getIntent().getStringExtra(Constants.EXTRA_URI));
             getLoaderManager().initLoader(QUERY_LOADER, null, new LoaderManager.LoaderCallbacks<Cursor>() {
                 @Override
                 public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -148,35 +154,52 @@ public class ResultsFragment extends Fragment {
 
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                    String temp[] = new String[14];
+                    int count = 0;
                     String[] tempTimeSpinnerValues = getResources().getStringArray(R.array.timeSpinner);
                     String[] tempFreqSpinnerValues = getResources().getStringArray(R.array.freqSpinner);
                     String[] tempDaySpinnerValues = getResources().getStringArray(R.array.weekDaySpinner);
                     String[] tempAreaSpinnerValues = getResources().getStringArray(R.array.areaSpinner);
+                    Log.v("Results count","Results count: "+data.getCount());
                     if (data.moveToFirst()) {
+                        idTemp = new String[data.getCount()][3];
+                        data.moveToFirst();
                         do {
-                            temp = "Day: " + tempDaySpinnerValues[data.getInt(INDEX_DAY)] +
-                                    " Departure time: " + tempTimeSpinnerValues[data.getInt(INDEX_DEP_TIME)] +
-                                    " Return time: " + tempTimeSpinnerValues[data.getInt(INDEX_RET_TIME)] +
-                                    " Frequency: " + tempFreqSpinnerValues[data.getInt(INDEX_FREQ)] +
-                                    " Area: " + tempAreaSpinnerValues[data.getInt(INDEX_AREA)] +
-                                    " Driver's name: " + data.getString(USERS_INDEX_FULLNAME) +
-                                    " Driver's email: " + data.getString(USERS_INDEX_EMAIL);
+                            temp[0] = "Day: ";
+                            temp[1] = tempDaySpinnerValues[data.getInt(INDEX_DAY)];
+                            temp[2] = " Departure time: ";
+                            temp[3] = tempTimeSpinnerValues[data.getInt(INDEX_DEP_TIME)];
+                            temp[4] = " Return time: ";
+                            temp[5] = tempTimeSpinnerValues[data.getInt(INDEX_RET_TIME)];
+                            temp[6] = " Frequency: ";
+                            temp[7] = tempFreqSpinnerValues[data.getInt(INDEX_FREQ)];
+                            temp[8] = " Area: ";
+                            temp[9] = tempAreaSpinnerValues[data.getInt(INDEX_AREA)];
+                            temp[10] = " Driver's name: ";
+                            temp[11] = data.getString(USERS_INDEX_FULLNAME);
+                            temp[12] = " Driver's email: ";
+                            temp[13] = data.getString(USERS_INDEX_EMAIL);
+
+                            idTemp[count][0] = data.getString(INDEX_ID);
+                            idTemp[count][1] = data.getString(USERS_INDEX_ID);
+                            idTemp[count][2] = data.getString(USERS_INDEX_EMAIL);
 
 
-                            //Toast.makeText(getActivity(),temp,Toast.LENGTH_LONG).show();
+                            count++;
 
-                            Log.v("Query Result", "Query Result: " + temp);
+                            Log.v("Query Result", "Query Result: " + printArray(temp));
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-//                            myAdapter.add(temp);
-//                            myDataset.add(temp);
-                            temp = "";
+                            myAdapter.add(printArray(temp));
+//                          myDataset.add(temp);
+                            temp = new String[14];
                         } while (data.moveToNext());
                     } else {
                         //myDataset.add("No results found");
                         myAdapter.add("No results found");
                     }
 
+                    results.setAdapter(myAdapter);
                     //mRecyclerView.setAdapter(mAdapter);
 
                 }
@@ -190,6 +213,37 @@ public class ResultsFragment extends Fragment {
 
 
         }
+
+//    private void registerTransp(int position){
+//        Uri uri= TransfersContract.TransportsEntry.buildTranspUri();
+//        ContentValues mNewValues = new ContentValues();
+//
+//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID,idTemp[position][0]);
+//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_USER_ID,idTemp[position][1]);
+//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_D,1);
+//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_U,1);
+//
+//        new AsyncTask<Object, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Object... params) {
+//                Context context=getActivity();
+//                context.getContentResolver().insert((Uri)params[0],(ContentValues)params[1]);
+//                return null;
+//            }
+//        }.execute(uri, mNewValues);
+//
+//
+//        Dialog dialog = new Dialog(getActivity(), getString(R.string.transpRegPopup), getString(R.string.transpPopUp));
+//        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().finish();
+//            }
+//        });
+//
+//        dialog.show();
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -208,11 +262,20 @@ public class ResultsFragment extends Fragment {
                 public void onClick(View v) {
                     SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=prefs.edit();
-                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putInt(Constants.EXTRA_USERID, -1);
                     editor.putString(getString(R.string.pref_username_key), "-1");
                     editor.commit();
-                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
-                    NavUtils.navigateUpTo(getActivity(),new Intent(getActivity(), LoginActivity.class));
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+//                    it.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                    startActivity(it);
+
+                    //NavUtils.navigateUpTo(getActivity(),new Intent(getActivity(), LoginActivity.class));
                 }
             }).show();
         }

@@ -19,12 +19,20 @@ public class Utilities {
             @Override
             public void onClick(View v) {
                 SharedPreferences prefs=context.getSharedPreferences(context.getString(R.string.pref_key), Context.MODE_PRIVATE);
-                prefs.edit().putInt(context.getString(R.string.pref_id_key),-1);
+                prefs.edit().putInt(Constants.EXTRA_USERID,-1);
                 prefs.edit().putString(context.getString(R.string.pref_username_key), "-1");
                 prefs.edit().commit();
-                Log.v("User ID","#####********User ID:"+prefs.getInt(context.getString(R.string.pref_id_key),-5555));
+                Log.v("User ID","#####********User ID:"+prefs.getInt(Constants.EXTRA_USERID,-5555));
                 context.finish();
             }
         }).show();
+    }
+
+    public static String printArray(String[] temp){
+        String tmp="";
+        for(int i=0;i<temp.length;i++){
+            tmp=tmp+temp[i];
+        }
+        return tmp;
     }
 }

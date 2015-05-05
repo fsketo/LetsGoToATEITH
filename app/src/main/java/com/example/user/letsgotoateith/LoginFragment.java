@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -98,13 +97,21 @@ public class LoginFragment extends Fragment {
             }
 
         });
-        EditText pass=(EditText)rootView.findViewById(R.id.password);
-        pass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Password not supported yet", Toast.LENGTH_LONG).show();
-            }
-        });
+//        EditText pass=(EditText)rootView.findViewById(R.id.password);
+//        pass.setInputType(InputType.TYPE_NULL);
+//        pass.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Toast.makeText(getActivity(), "Password not supported yet", Toast.LENGTH_LONG).show();
+//                return true;
+//            }
+//        });
+//        pass.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getActivity(), "Password not supported yet", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         return rootView;
     }
@@ -129,10 +136,10 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra(Constants.EXTRA_USERNAME, usernameStr);
                     intent.putExtra(Constants.EXTRA_USERID, data.getInt(0));
-                    editor.putInt(getString(R.string.pref_id_key), data.getInt(0));
+                    editor.putInt(Constants.EXTRA_USERID, data.getInt(0));
                     editor.putString(getString(R.string.pref_username_key), usernameStr);
                     editor.commit();
-                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
                     intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                     startActivity(intent);
                     getActivity().finish();

@@ -172,7 +172,7 @@ public class TransfersProvider extends ContentProvider {
         //matcher.addURI(authority, TransfersContract.PATH_USERS, USER_PROFILE);
         matcher.addURI(authority, TransfersContract.PATH_USERS, USER_PROFILE_I);
         matcher.addURI(authority, TransfersContract.PATH_REG_CARS + "/#/#/#/#/#/#", TRANSPORT_DATA_I);
-        matcher.addURI(authority, TransfersContract.PATH_TRANSP + "/#/#/#/#", TRANSPORT_CHOOSE_I);
+        matcher.addURI(authority, TransfersContract.PATH_TRANSP, TRANSPORT_CHOOSE_I);
         matcher.addURI(authority, TransfersContract.PATH_USERS + "/#", USER_PROFILE_S);
         matcher.addURI(authority, TransfersContract.PATH_REG_CARS + "/#/#/#/#/#", TRANSPORT_DATA_S);
         matcher.addURI(authority, TransfersContract.PATH_TRANSP + "/#/#", TRANSPORT_CHOOSE_S);
@@ -190,10 +190,11 @@ public class TransfersProvider extends ContentProvider {
                     TransfersContract.CarsEntry.TABLE_NAME +
                     "."+TransfersContract.CarsEntry.COLUMN_FREQ + " = ? AND "+
                     TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_AREA + " = ? AND "+
-                    TransfersContract.CarsEntry.TABLE_NAME +
-                    "."+TransfersContract.CarsEntry.COLUMN_PEOPLE+" != "+
-                    TransfersContract.CarsEntry.COLUMN_PEOPLE_REG;
+                    "."+TransfersContract.CarsEntry.COLUMN_AREA + " = ?";
+//    AND "+
+//                    TransfersContract.CarsEntry.TABLE_NAME +
+//                    "."+TransfersContract.CarsEntry.COLUMN_PEOPLE+" != "+
+//                    TransfersContract.CarsEntry.COLUMN_PEOPLE_REG;
 
     private static final String sGetTransport =
             TransfersContract.TransportsEntry.TABLE_NAME +

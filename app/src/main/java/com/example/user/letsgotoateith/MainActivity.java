@@ -1,12 +1,26 @@
 package com.example.user.letsgotoateith;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements MainFragment.Callback{
+
+
+    private BroadcastReceiver brRe=new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            Log.d("onReceive", "Logout in progress");
+            //At this point you should start the login activity and finish this one
+            finish();
+        }
+    };
 
     static boolean mTwoPane;
     private String OWNACARFRAGMENT_TAG="OAC";
@@ -46,6 +60,11 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
 
 //        MainFragment ownACarFragment =  ((MainFragment)getSupportFragmentManager()
 //                .findFragmentById(R.id.fragmentContainer));
+
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(brRe, intentFilter);
 
     }
 
@@ -100,7 +119,11 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
     }
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(brRe);
+    }
 
 
 

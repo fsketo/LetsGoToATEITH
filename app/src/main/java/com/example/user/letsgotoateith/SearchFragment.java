@@ -93,11 +93,15 @@ public class SearchFragment extends Fragment {
                 public void onClick(View v) {
                     SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=prefs.edit();
-                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putInt(Constants.EXTRA_USERID, -1);
                     editor.putString(getString(R.string.pref_username_key), "-1");
                     editor.commit();
-                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getActivity().getString(R.string.pref_id_key), -5555));
-                    getActivity().finish();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(it);
                 }
             }).show();
         }

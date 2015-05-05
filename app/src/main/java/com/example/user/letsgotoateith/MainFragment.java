@@ -55,7 +55,8 @@ public class MainFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
         editor=prefs.edit();
-        int loggedInUserID=prefs.getInt(getString(R.string.pref_id_key),-1);
+        int loggedInUserID=prefs.getInt(Constants.EXTRA_USERID, -1);
+        Log.v("USER ID FROM SHARED PRE",String.valueOf(prefs.getInt(Constants.EXTRA_USERID, -1)));
         if(loggedInUserID==-1){
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
@@ -87,13 +88,14 @@ public class MainFragment extends Fragment{
 //        }
 
         if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
-            username = intent.getStringExtra(Constants.EXTRA_USERNAME);
-            userId=intent.getIntExtra(Constants.EXTRA_USERID, -1);
+            username = intent.getStringExtra(getString(R.string.pref_username_key));
+            //userId=intent.getIntExtra(Constants.EXTRA_USERID, -1);
+            userId=prefs.getInt(Constants.EXTRA_USERID, -1);
 //            if (!MainActivity.mTwoPane) {
 //                ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.title_activity_main) + " " + username);
 //            }
         }
-
+        getActivity().setTitle(getString(R.string.title_activity_main)+" "+prefs.getString(getString(R.string.pref_username_key), "-1"));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
@@ -113,7 +115,7 @@ public class MainFragment extends Fragment{
                     ((Callback)getActivity()).onItemSelected(text);
                 else if(text.equals(getString(R.string.ownAcar))){
                     Intent intent = new Intent(getActivity(), OwnCarActivity.class);
-                    intent.putExtra(Constants.EXTRA_USERNAME,username);
+                    intent.putExtra(Constants.EXTRA_USERID,username);
                     intent.putExtra(Constants.EXTRA_USERID,userId);
                     startActivity(intent);
                 }
@@ -225,11 +227,15 @@ public class MainFragment extends Fragment{
                 public void onClick(View v) {
                     SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor=prefs.edit();
-                    editor.putInt(getString(R.string.pref_id_key), -1);
+                    editor.putInt(Constants.EXTRA_USERID, -1);
                     editor.putString(getString(R.string.pref_username_key), "-1");
                     editor.commit();
-                    Log.v("User ID", "#####********User ID:" + prefs.getInt(getString(R.string.pref_id_key), -5555));
-                    getActivity().finish();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(it);
                 }
             }).show();
         }
