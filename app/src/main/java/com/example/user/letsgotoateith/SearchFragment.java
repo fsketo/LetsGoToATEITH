@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import com.rey.material.widget.Spinner;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -38,6 +39,32 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
+
+        com.rey.material.widget.Spinner whichDaySpinner = (com.rey.material.widget.Spinner)rootView.findViewById(R.id.whichDaySpinner);
+        ArrayAdapter<String> adapterwhichDaySpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.weekDaySpinner));
+        adapterwhichDaySpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        whichDaySpinner.setAdapter(adapterwhichDaySpinner);
+
+        com.rey.material.widget.Spinner depTimeSpinner = (com.rey.material.widget.Spinner)rootView.findViewById(R.id.depTimeSpinner);
+        ArrayAdapter<String> adapterdepTimeSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.timeSpinner));
+        adapterdepTimeSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        depTimeSpinner.setAdapter(adapterdepTimeSpinner);
+
+        com.rey.material.widget.Spinner retTimeSpinner = (com.rey.material.widget.Spinner)rootView.findViewById(R.id.retTimeSpinner);
+        ArrayAdapter<String> adapterretTimeSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.timeSpinner));
+        adapterretTimeSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        retTimeSpinner.setAdapter(adapterretTimeSpinner);
+
+        com.rey.material.widget.Spinner freqSpinner = (com.rey.material.widget.Spinner)rootView.findViewById(R.id.freqSpinner);
+        ArrayAdapter<String> adapterfreqSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.freqSpinner));
+        adapterfreqSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        freqSpinner.setAdapter(adapterfreqSpinner);
+
+        com.rey.material.widget.Spinner areaSpinner = (com.rey.material.widget.Spinner)rootView.findViewById(R.id.areaSpinner);
+        ArrayAdapter<String> adapterareaSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.areaSpinner));
+        adapterareaSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        areaSpinner.setAdapter(adapterareaSpinner);
+
 //        if(!MainActivity.mTwoPane) {
 //            Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 //            ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);

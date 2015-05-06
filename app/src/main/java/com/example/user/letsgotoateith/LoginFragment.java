@@ -17,11 +17,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.rey.material.widget.EditText;
+
+//import com.rey.material.widget.TextView;
+
+
+//import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
 
@@ -64,6 +69,7 @@ public class LoginFragment extends Fragment {
         //Log.v("User ID", "User ID: " + loggedInUserID);
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
+
 //        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
 //        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
         //((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Let's go to ATEITH");
@@ -71,7 +77,7 @@ public class LoginFragment extends Fragment {
         ButtonRectangle loginButton =(ButtonRectangle)rootView.findViewById(R.id.loginButton);
         TextView aboutButton=(TextView)rootView.findViewById(R.id.aboutText);
         TextView registerButton=(TextView)rootView.findViewById(R.id.registerText);
-        username=(EditText)rootView.findViewById(R.id.username);
+        username= (EditText) rootView.findViewById(R.id.username);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +152,7 @@ public class LoginFragment extends Fragment {
                 }
                 else{
                     username.setText("");
-                    username.setHint("Wrong Username");
+                    username.setError("Wrong Username");
                 }
             }
 

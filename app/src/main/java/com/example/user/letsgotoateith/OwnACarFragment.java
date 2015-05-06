@@ -12,8 +12,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
-
+import android.widget.ArrayAdapter;
+//import android.widget.Spinner;
+import com.rey.material.widget.Spinner;
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
@@ -60,6 +61,36 @@ public class OwnACarFragment extends Fragment{
 //            }
             //((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("Let's go to ATEITH");
             ButtonRectangle submitButton=(ButtonRectangle)rootView.findViewById(R.id.submit_button);
+
+            Spinner howManyPeopleSpinner = (Spinner)rootView.findViewById(R.id.howManyPeopleSpinner);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.peopleSpinner));
+            adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+            howManyPeopleSpinner.setAdapter(adapter);
+
+            Spinner whichDaySpinner = (Spinner)rootView.findViewById(R.id.whichDaySpinner);
+            ArrayAdapter<String> adapterwhichDaySpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.weekDaySpinner));
+            adapterwhichDaySpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+            whichDaySpinner.setAdapter(adapterwhichDaySpinner);
+
+            Spinner depTimeSpinner = (Spinner)rootView.findViewById(R.id.depTimeSpinner);
+            ArrayAdapter<String> adapterdepTimeSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.timeSpinner));
+            adapterdepTimeSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+            depTimeSpinner.setAdapter(adapterdepTimeSpinner);
+
+            Spinner retTimeSpinner = (Spinner)rootView.findViewById(R.id.retTimeSpinner);
+            ArrayAdapter<String> adapterretTimeSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.timeSpinner));
+            adapterretTimeSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+            retTimeSpinner.setAdapter(adapterretTimeSpinner);
+
+            Spinner freqSpinner = (Spinner)rootView.findViewById(R.id.freqSpinner);
+            ArrayAdapter<String> adapterfreqSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.freqSpinner));
+            adapterfreqSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+            freqSpinner.setAdapter(adapterfreqSpinner);
+
+            Spinner areaSpinner = (Spinner)rootView.findViewById(R.id.areaSpinner);
+            ArrayAdapter<String> adapterareaSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.areaSpinner));
+            adapterareaSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+            areaSpinner.setAdapter(adapterareaSpinner);
 
             submitButton.setOnClickListener(new View.OnClickListener() {
 

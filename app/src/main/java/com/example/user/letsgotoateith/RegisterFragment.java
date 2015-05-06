@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
+import com.rey.material.widget.EditText;
+import com.rey.material.widget.Spinner;
+
+//import android.widget.EditText;
+//import android.widget.Spinner;
 
 /**
  * Created by user on 19/4/2015.
@@ -34,9 +38,14 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
-//        Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
-//        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
-//        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Spinner areaSpinner = (Spinner)rootView.findViewById(R.id.areaSpinner);
+        ArrayAdapter<String> adapterareaSpinner = new ArrayAdapter<>(getActivity(), R.layout.row_spn, getResources().getStringArray(R.array.areaSpinner));
+        adapterareaSpinner.setDropDownViewResource(R.layout.row_spn_dropdown);
+        areaSpinner.setAdapter(adapterareaSpinner);
+//      Toolbar toolbar=(Toolbar) rootView.findViewById(R.id.toolbar);
+//      ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+//      ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fullname=(EditText)rootView.findViewById(R.id.fullname);
         username=(EditText)rootView.findViewById(R.id.username);
         school=(EditText)rootView.findViewById(R.id.school);
@@ -62,28 +71,33 @@ public class RegisterFragment extends Fragment {
                 }
 
                 if(usernameS.trim().isEmpty()){
-                    username.setHint("Insert Username");
-                    username.setBackgroundColor(-65536);
+                    username.setError(getString(R.string.usernameErrorHint));
+                    //username.setHint(getString(R.string.usernameErrorHint));
+                    //username.setBackgroundColor(-65536);
                     flag=false;
                 }
                 if(fullnameS.trim().isEmpty()){
-                    fullname.setHint("Insert Full name");
-                    fullname.setBackgroundColor(-65536);
+                    fullname.setError(getString(R.string.fullnameErrorHint));
+//                    fullname.setHint(getString(R.string.fullnameErrorHint));
+//                    fullname.setBackgroundColor(-65536);
                     flag=false;
                 }
                 if(schoolS.trim().isEmpty()){
-                    school.setHint("Insert School");
-                    school.setBackgroundColor(-65536);
+                    school.setError(getString(R.string.schoolErrorHint));
+//                    school.setHint(getString(R.string.schoolErrorHint));
+//                    school.setBackgroundColor(-65536);
                     flag=false;
                 }
                 if(emailS.trim().isEmpty()){
-                    email.setHint("Insert Email");
-                    email.setBackgroundColor(-65536);
+                    email.setError(getString(R.string.emailErrorHint));
+//                    email.setHint(getString(R.string.emailErrorHint));
+//                    email.setBackgroundColor(-65536);
                     flag=false;
                 }
                 else if(!emailS.trim().contains("@teithe.gr")){
-                    email.setHint("You can only use your Teithe email address");
-                    email.setBackgroundColor( -65536);
+                    email.setError(getString(R.string.emailTeitheErrorHint));
+//                    email.setHint(getString(R.string.emailTeitheErrorHint));
+//                    email.setBackgroundColor( -65536);
                     flag=false;
                 }
 

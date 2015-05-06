@@ -14,15 +14,15 @@
     <string name="title_activity_own_car">Register a car</string>
     <string name="howManyPeople">How many people can you transfer?</string>
     <string name="whichDay">On which day of the week?</string>
-    <string name="depTime">Time of departure</string>
-    <string name="retTime">Time of return</string>
+    <string name="depTime">Approximate time of departure</string>
+    <string name="retTime">Approximate time of return</string>
     <string name="freq">Frequency</string>
     <string name="lookingForCar">I am looking for a car</string>
     <string name="manageTrans">Manage Transportations</string>
     <string name="ownAcar">I own a car</string>
     <string name="searchButtonText">Search</string>
     <string name="submitButtonText">Submit</string>
-    <string name="area">Select area</string>
+    <string name="area">Select desired area</string>
     <string name="ownAcarPopUp">Congratulations! Your car has been registered!</string>
     <string name="dialog_resume">Continue</string>
     <string-array name="peopleSpinner">
@@ -64,16 +64,16 @@
         <item>Center</item>
         <item>West</item>
     </string-array>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="welcomeText">Welcome in a world without buses! \n Tell us a few things about yourself..</string>
+    <string name="title_activity_register">Register</string>
+    <string name="welcomeText">Tell us a few things about you..</string>
     <string name="fullnameHint">Full name</string>
     <string name="schoolHint">School</string>
     <string name="email">University email address</string>
     <string name="facebook">Facebook link eg: /myName</string>
     <string name="signUp">Sign up</string>
     <string name="areaText">Choose your area of residence</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_search">Search for a ride</string>
+    <string name="title_activity_about">About this app</string>
     <string name="insideAboutTextTitle">About this app</string>
     <string name="insideAboutText1">This app is developed entirely by Tsalampounis Fotis.</string>
     <string name="insideAboutText2">For any suggestions or comments please do not hesitate to contact him at fsketo@gmail.com</string>
@@ -83,7 +83,7 @@
     <string name="pref_username_key">pref_username</string>
     <string name="pref_id_key">pref_id</string>
     <string name="action_logout">Logout</string>
-    <string name="title_activity_results">ResultsActivity</string>
+    <string name="title_activity_results">Search Results</string>
     <string name="registerPopUp">User created successfully! Welcome in a world without buses!</string>
     <string name="transpPopUp">Transport Registered successfully! Welcome in a world without buses!</string>
     <string name="ownAcarPopUpTitle">Car Registration</string>
@@ -93,4 +93,11 @@
     <string name="userRegPopup">User Registration</string>
     <string name="pref_key">session</string>
     <string name="transpRegPopup">Transport Registration</string>
+    <string name="usernameErrorHint">Insert Username</string>
+    <string name="fullnameErrorHint">Insert Full name</string>
+    <string name="schoolErrorHint">Insert School</string>
+    <string name="emailErrorHint">Insert Email</string>
+    <string name="emailTeitheErrorHint">Please use your Teithe email address</string>
+    <string name="ownACarTitle">Register your car</string>
+    <string name="searchTitle">Search for a ride</string>
 </resources>

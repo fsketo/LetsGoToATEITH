@@ -9,18 +9,32 @@
     <!--<include-->
         <!--android:id="@+id/toolbar"-->
         <!--layout="@layout/toolbar" />-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/main_content">
 
-    <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:id="@+id/main_content">-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ownACarTitle"
+        android:id="@+id/ownACarTitle"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="center_horizontal"
+        />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
                 android:layout_marginBottom="25dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
@@ -29,7 +43,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/howManyPeople"
-                    android:id="@+id/howManyPeople" />
+                    android:id="@+id/howManyPeople"
+                    android:textSize="18sp"
+                    android:layout_marginRight="45dp"/>
 
                 <com.rey.material.widget.Spinner
                     style="@style/Material.Widget.Spinner.Light"
@@ -68,7 +84,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/whichDay"
-                android:id="@+id/whichDay" />
+                android:id="@+id/whichDay"
+                android:textSize="18sp"
+                android:layout_marginRight="45dp"/>
 
             <com.rey.material.widget.Spinner
                 style="@style/Material.Widget.Spinner.Light"
@@ -106,7 +124,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/depTime"
-            android:id="@+id/depTime" />
+            android:id="@+id/depTime"
+            android:textSize="18sp"
+            android:layout_marginRight="45dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -143,7 +163,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/retTime"
-            android:id="@+id/retTime" />
+            android:id="@+id/retTime"
+            android:textSize="18sp"
+            android:layout_marginRight="45dp"/>
 
 
         <com.rey.material.widget.Spinner
@@ -182,7 +204,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/freq"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textSize="18sp"
+            android:layout_marginRight="45dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -220,7 +244,9 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="@string/area"
-             android:id="@+id/area" />
+             android:id="@+id/area"
+             android:textSize="18sp"
+             android:layout_marginRight="30dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -269,6 +295,7 @@
             <!--android:text="@string/submitButtonText"-->
             <!--android:id="@+id/submit_button" />-->
     </LinearLayout>
+        </LinearLayout>
+</ScrollView>
 
-<!--</LinearLayout>-->
 </LinearLayout>

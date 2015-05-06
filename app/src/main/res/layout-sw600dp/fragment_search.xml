@@ -13,13 +13,24 @@
         <!--android:layout_width="fill_parent"-->
         <!--android:layout_height="fill_parent"-->
         <!--android:id="@+id/main_content">-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/searchTitle"
+        android:id="@+id/searchTitle"
+        android:textSize="30sp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="45dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -57,7 +68,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -94,7 +105,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -133,7 +144,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -171,7 +182,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="45dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
 
@@ -209,7 +220,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="45dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 

@@ -1,3 +1,7 @@
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
@@ -27,7 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/whichDay"
-            android:id="@+id/whichDay" />
+            android:id="@+id/whichDay"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="35dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -65,7 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/depTime"
-            android:id="@+id/depTime" />
+            android:id="@+id/depTime"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="35dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -102,7 +112,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/retTime"
-            android:id="@+id/retTime" />
+            android:id="@+id/retTime"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="35dp"/>
 
 
         <com.rey.material.widget.Spinner
@@ -141,7 +154,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/freq"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="35dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -179,7 +195,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/area"
-            android:id="@+id/area" />
+            android:id="@+id/area"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="35dp"/>
 
         <com.rey.material.widget.Spinner
             style="@style/Material.Widget.Spinner.Light"
@@ -231,4 +250,5 @@
 
 
     </LinearLayout>
+    </ScrollView>
 <!--</LinearLayout>-->
