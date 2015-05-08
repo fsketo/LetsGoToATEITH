@@ -2,6 +2,7 @@ package com.example.user.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.widgets.Dialog;
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
@@ -94,26 +97,72 @@ public class TransportDetailsActivityFragment extends Fragment {
         results.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if (usersCopy[position - 1][13].equals(Integer.toString(getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555)))) {
+                if(intent.getBooleanExtra(Constants.EXTRA_ISDRIVER,false)) {
+                    if (usersCopy[position - 1][13].equals(Integer.toString(getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555)))) {
+                        Dialog dialog = new Dialog(getActivity(), getString(R.string.deleteTransportTitle), getString(R.string.deleteTransport));
+                        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                Log.v("On Long Click", "On Long Click");
+                                getActivity().getContentResolver().delete(Uri.parse(TransfersContract.CarsEntry.CONTENT_URI + "/0/0/0/0/0"),
+                                            TransfersContract.CarsEntry._ID + " = ? ",
+                                        new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID)});
+
+                                myAdapter.notifyDataSetChanged();
+
+                                getActivity().finish();
+                            }
+                        });
+
+                        dialog.addCancelButton(getString(R.string.dialogCancel));
+                        dialog.show();
+                    }
+                    else{
+                        Dialog dialog = new Dialog(getActivity(), getString(R.string.deleteFromTransportTitle), getString(R.string.deleteFromTransport1));
+                        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                Log.v("On Long Click", "On Long Click");
+                                getActivity().getContentResolver().delete(Uri.parse(TransfersContract.TransportsEntry.CONTENT_URI + "/0"),
+                                        TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID + " = ? AND " +
+                                                TransfersContract.TransportsEntry.COLUMN_USER_ID + " = ? ",
+                                        new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID), usersCopy[position - 1][13]});
+
+                                myAdapter.notifyDataSetChanged();
+                                getActivity().finish();
+                            }
+                        });
+                        dialog.addCancelButton(getString(R.string.dialogCancel));
+                        dialog.show();
+                    }
+                }
+                else if (usersCopy[position - 1][13].equals(Integer.toString(getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555)))) {
                     Dialog dialog = new Dialog(getActivity(), getString(R.string.deleteFromTransportTitle), getString(R.string.deleteFromTransport));
                     dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            Log.v("On Long Click","On Long Click");
-                            getActivity().getContentResolver().delete(Uri.parse(TransfersContract.TransportsEntry.CONTENT_URI+"/0"),
+                            Log.v("On Long Click", "On Long Click");
+                            getActivity().getContentResolver().delete(Uri.parse(TransfersContract.TransportsEntry.CONTENT_URI + "/0"),
                                     TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID + " = ? AND " +
                                             TransfersContract.TransportsEntry.COLUMN_USER_ID + " = ? ",
                                     new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID), usersCopy[position - 1][13]});
+
                             myAdapter.notifyDataSetChanged();
+                            getActivity().finish();
                         }
                     });
+                    dialog.addCancelButton(getString(R.string.dialogCancel));
 
                     dialog.show();
                 }
+
                 return true;
             }
         });
+        setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -191,5 +240,39 @@ public class TransportDetailsActivityFragment extends Fragment {
             // Restore last state for checked position.
             usid = savedInstanceState.getStringArray("userids");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        Log.v("Own a car menu selected", "Own a car menu selected");
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Log.v("logout selected","logout selected");
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(Constants.EXTRA_USERID, -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(it);
+                }
+            }).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

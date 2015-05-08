@@ -2,6 +2,7 @@ package com.example.user.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.letsgotoateith.data.TransfersContract;
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
@@ -106,11 +109,15 @@ public class ManageTransportationsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Log.v("Position","Position "+position);
                 if(position>0) {
-                    if(!flagDr)
+                    if(!flagDr) {
+
                         findUsersInTransport(transpTempDr[position - 1][16]);
+                    }
                 }
             }
         });
+
+        setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -142,6 +149,7 @@ public class ManageTransportationsFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), TransportDetailsActivity.class);
                     intent.putExtra(Constants.EXTRA_ARRAY, userIDS);
                     intent.putExtra(Constants.EXTRA_REGCARID,reg_car_id);
+                    intent.putExtra(Constants.EXTRA_ISDRIVER,!flagDr);
                     startActivity(intent);
                 }
                 Log.v("Position","Position "+reg_car_id);
@@ -278,5 +286,39 @@ public class ManageTransportationsFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        Log.v("Own a car menu selected","Own a car menu selected");
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Log.v("logout selected","logout selected");
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(Constants.EXTRA_USERID, -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(it);
+                }
+            }).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

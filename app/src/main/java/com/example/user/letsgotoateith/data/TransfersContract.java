@@ -183,6 +183,9 @@ public class TransfersContract {
 //        public static int getPeopleFromUri(Uri uri) {
 //            return Integer.parseInt(uri.getPathSegments().get(2));
 //        }
+        public static int getCarIdFromUri(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(1));
+        }
 
         public static int getDayFromUri(Uri uri) {
             return Integer.parseInt(uri.getPathSegments().get(1));

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -101,24 +102,28 @@ public class OwnACarFragment extends Fragment{
 
                         @Override
                         public void onClick(View v) {
-                            Dialog dialog = new Dialog(getActivity(), getString(R.string.ownAcarPopUpTitle), getString(R.string.ownAcarPopUp));
-                            dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = getActivity().getIntent();
-                                    //if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
-                                        username = intent.getStringExtra(Constants.EXTRA_USERNAME);
-                                        userId=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555);
-                                        //userId = intent.getIntExtra(Constants.EXTRA_USERID, -15555);
-                                        Log.v("USER ID ALALA","USER ID ALALA "+getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555));
-                                    //}
-                                    insertQuery(rootView);
-                                    if (!MainActivity.mTwoPane)
-                                        getActivity().finish();
-                                }
-                            });
-                            dialog.show();
+                            Intent intent = getActivity().getIntent();
+                            username = intent.getStringExtra(Constants.EXTRA_USERNAME);
+                            userId=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555);
+                            insertQuery(rootView);
+//                            Dialog dialog = new Dialog(getActivity(), getString(R.string.ownAcarPopUpTitle), getString(R.string.ownAcarPopUp));
+//                            dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+//
+//                                @Override
+//                                public void onClick(View v) {
+//                                    Intent intent = getActivity().getIntent();
+//                                    //if (intent != null && intent.hasExtra(Constants.EXTRA_USERNAME)) {
+//                                        username = intent.getStringExtra(Constants.EXTRA_USERNAME);
+//                                        userId=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555);
+//                                        //userId = intent.getIntExtra(Constants.EXTRA_USERID, -15555);
+//                                        Log.v("USER ID ALALA","USER ID ALALA "+getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555));
+//                                    //}
+//                                    insertQuery(rootView);
+//                                    if (!MainActivity.mTwoPane)
+//                                        getActivity().finish();
+//                                }
+//                            });
+//                            dialog.show();
                         }
                     });
                     dialog.addCancelButton(getString(R.string.dialogCancel),new View.OnClickListener() {
@@ -189,9 +194,43 @@ public class OwnACarFragment extends Fragment{
         mNewValues.put(TransfersContract.CarsEntry.COLUMN_PEOPLE_REG, 0);
         mNewValues.put(TransfersContract.CarsEntry.COLUMN_AREA, area);
         Context context=getActivity();
-        context.getContentResolver().insert(uri, mNewValues);
+        ;
+
+        registerTransp(TransfersContract.CarsEntry.getCarIdFromUri(context.getContentResolver().insert(uri, mNewValues)));
     }
 
+    private void registerTransp(int reg_car){
+        Uri uri= TransfersContract.TransportsEntry.buildTranspUri2();
+        ContentValues mNewValues = new ContentValues();
+
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID,reg_car);
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_USER_ID,getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555));
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_D,1);
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_U, 1);
+
+        new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                Context context=getActivity();
+                context.getContentResolver().insert((Uri)params[0],(ContentValues)params[1]);
+                return null;
+            }
+        }.execute(uri, mNewValues);
+
+
+        Dialog dialog = new Dialog(getActivity(), getString(R.string.ownAcarPopUpTitle), getString(R.string.ownAcarPopUp));
+        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.v("USER ID ALALA", "USER ID ALALA " + getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555));
+
+                if (!MainActivity.mTwoPane)
+                    getActivity().finish();
+            }
+        });
+        dialog.show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

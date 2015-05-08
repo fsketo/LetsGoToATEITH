@@ -1,16 +1,22 @@
 package com.example.user.letsgotoateith;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
@@ -69,7 +75,7 @@ public class DisplayTranspUserRegActivityFragment extends Fragment {
 
                 } else if (position == 6) {
                     if(!userdata[11].equals("No Facebook Data")){
-                        String url = "http://www.facebook.com/"+userdata[9];
+                        String url = "http://www.facebook.com"+userdata[11];
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
                         startActivity(i);
@@ -77,9 +83,42 @@ public class DisplayTranspUserRegActivityFragment extends Fragment {
                 }
             }
         });
-
+        setHasOptionsMenu(true);
         return rootView;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        Log.v("Own a car menu selected", "Own a car menu selected");
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            Log.v("logout selected","logout selected");
+            new SnackBar(getActivity(), "Are you sure you want to logout?", "Yes", new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences prefs=getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=prefs.edit();
+                    editor.putInt(Constants.EXTRA_USERID, -1);
+                    editor.putString(getString(R.string.pref_username_key), "-1");
+                    editor.commit();
+                    Log.v("User ID", "#####********User ID:" + prefs.getInt(Constants.EXTRA_USERID, -5555));
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                    getActivity().sendBroadcast(broadcastIntent);
+                    Intent it = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(it);
+                }
+            }).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }
