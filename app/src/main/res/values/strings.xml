@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lets Go To ATEITH</string>
+    <string name="app_name">Let\'s Go To ATEITH</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="loginTitle">Let\'s go to ATEITH</string>
@@ -100,4 +100,10 @@
     <string name="emailTeitheErrorHint">Please use your Teithe email address</string>
     <string name="ownACarTitle">Register your car</string>
     <string name="searchTitle">Search for a ride</string>
+    <string name="title_activity_manage_transportations">ManageTransportationsActivity</string>
+    <string name="transpPopUpText">You have succesfuly registered in this transport.</string>
+    <string name="title_activity_transport_details">TransportDetailsActivity</string>
+    <string name="title_activity_display_transp_user_reg">DisplayTranspUserRegActivity</string>
+    <string name="deleteFromTransportTitle">Delete from transport</string>
+    <string name="deleteFromTransport">Are you sure you want to remove your self from this transport?</string>
 </resources>

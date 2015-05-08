@@ -237,11 +237,19 @@ public class TransfersContract {
         }
 
         public static int getUserIdFromUri(Uri uri) {
-            return Integer.parseInt(uri.getPathSegments().get(2));
+            return Integer.parseInt(uri.getPathSegments().get(1));
         }
 
         public static Uri buildTranspUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildUsersTranspUri() {
+            return CONTENT_URI.buildUpon().build();
+        }
+
+        public static Uri buildTranspUri2() {
+            return CONTENT_URI.buildUpon().appendPath("1").appendPath("1").build();
         }
 
         public static Uri buildTranspUri() {

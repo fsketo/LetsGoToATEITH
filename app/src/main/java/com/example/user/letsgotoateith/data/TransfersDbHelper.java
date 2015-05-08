@@ -46,7 +46,7 @@ public class TransfersDbHelper extends SQLiteOpenHelper {
                 CarsEntry.COLUMN_FREQ + " INTEGER NOT NULL, " +
                 CarsEntry.COLUMN_PEOPLE_REG + " INTEGER NOT NULL, " +
                 CarsEntry.COLUMN_DRIVER_ID+ " INTEGER NOT NULL REFERENCES "+ UsersEntry.TABLE_NAME+" ("+UsersEntry._ID+"), "+
-                CarsEntry.COLUMN_AREA+" TExXT NOT NULL );";
+                CarsEntry.COLUMN_AREA+" TEXT NOT NULL );";
 
         final String SQL_CREATE_TRANSP_TABLE = "CREATE TABLE " + TransportsEntry.TABLE_NAME + " (" +
                 TransportsEntry.COLUMN_REG_CAR_ID+" INTEGER NOT NULL REFERENCES "+CarsEntry.TABLE_NAME + " (" + CarsEntry._ID + "), "+

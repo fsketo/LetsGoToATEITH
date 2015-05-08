@@ -1,10 +1,12 @@
 package com.example.user.letsgotoateith;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -19,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.user.letsgotoateith.data.TransfersContract;
+import com.gc.materialdesign.widgets.Dialog;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
@@ -115,23 +119,39 @@ public class ResultsFragment extends Fragment {
 
             results.setAdapter(myAdapter);
             findCars();
+
             results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/html");
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType("text/html");
                     //Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(results.getItemAtPosition(position).toString());
                     //while (m.find()) {
                         //String tmp=m.group();
                         //Log.v("Email***********", "Email: " + temp[13]);
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{idTemp[position][2]});
-                    //}
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Let's go to ATEITH");
-                    intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(results.getItemAtPosition(position).toString()));
+//                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{idTemp[position][2]});
+//                    //}
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, "Let's go to ATEITH");
+//                    intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(results.getItemAtPosition(position).toString()));
+                    Dialog dialog = new Dialog(getActivity(), getString(R.string.ownAcarDataPopUpTitle), getString(R.string.ownAcarDataPopUp));
+                    dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
 
-                    //registerTransp(position);
+                        @Override
+                        public void onClick(View v) {
+                            registerTransp(position);
+                        }
+                    });
+                    dialog.addCancelButton(getString(R.string.dialogCancel), new View.OnClickListener() {
 
-                    startActivity(Intent.createChooser(intent, "Send Email"));
+                        @Override
+                        public void onClick(View v) {
+                            if (!MainActivity.mTwoPane)
+                                Log.v("Cancel Button", "Cancel Button");
+                        }
+                    });
+                    dialog.show();
+
+                    //startActivity(Intent.createChooser(intent, "Send Email"));
                 }
             });
 
@@ -214,36 +234,36 @@ public class ResultsFragment extends Fragment {
 
         }
 
-//    private void registerTransp(int position){
-//        Uri uri= TransfersContract.TransportsEntry.buildTranspUri();
-//        ContentValues mNewValues = new ContentValues();
-//
-//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID,idTemp[position][0]);
-//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_USER_ID,idTemp[position][1]);
-//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_D,1);
-//        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_U,1);
-//
-//        new AsyncTask<Object, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Object... params) {
-//                Context context=getActivity();
-//                context.getContentResolver().insert((Uri)params[0],(ContentValues)params[1]);
-//                return null;
-//            }
-//        }.execute(uri, mNewValues);
-//
-//
-//        Dialog dialog = new Dialog(getActivity(), getString(R.string.transpRegPopup), getString(R.string.transpPopUp));
-//        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().finish();
-//            }
-//        });
-//
-//        dialog.show();
-//    }
+    private void registerTransp(int position){
+        Uri uri= TransfersContract.TransportsEntry.buildTranspUri2();
+        ContentValues mNewValues = new ContentValues();
+
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID,idTemp[position][0]);
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_USER_ID,getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555));
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_D,1);
+        mNewValues.put(TransfersContract.TransportsEntry.COLUMN_CONFIRMED_U,1);
+
+        new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                Context context=getActivity();
+                context.getContentResolver().insert((Uri)params[0],(ContentValues)params[1]);
+                return null;
+            }
+        }.execute(uri, mNewValues);
+
+
+        Dialog dialog = new Dialog(getActivity(), getString(R.string.transpRegPopup), getString(R.string.transpPopUpText));
+        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //getActivity().finish();
+            }
+        });
+
+        dialog.show();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

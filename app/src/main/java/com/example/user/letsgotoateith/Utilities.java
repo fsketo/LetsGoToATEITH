@@ -35,4 +35,13 @@ public class Utilities {
         }
         return tmp;
     }
+
+    public static String printArray(String[][] temp, int i, int max){
+        String tmp="";
+        Log.v("****I","****I"+i+"   *****J"+max);
+        for(int j=0;j<max;j++){
+            tmp=tmp+temp[i][j];
+        }
+        return tmp;
+    }
 }

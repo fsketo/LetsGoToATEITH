@@ -21,10 +21,12 @@ public class TransfersProvider extends ContentProvider {
     static final int TRANSPORT_DATA_S = 100;
     static final int USER_PROFILE_S = 101;
     static final int TRANSPORT_CHOOSE_S = 102;
+    static final int TRANSPORT_USERS_S = 103;
 
     static final int TRANSPORT_DATA_I = 200;
     static final int USER_PROFILE_I = 201;
     static final int TRANSPORT_CHOOSE_I = 202;
+    static final int TRANSPORT_CHOOSE_I2 = 203;
 
     private static final SQLiteQueryBuilder sQueryBuilder;
 
@@ -50,19 +52,32 @@ public class TransfersProvider extends ContentProvider {
     static{
         sSearchTranspStatusQueryBuilder = new SQLiteQueryBuilder();
 
-        //weather INNER JOIN location ON weather.location_id = location._id
         sSearchTranspStatusQueryBuilder.setTables(
-                TransfersContract.TransportsEntry.TABLE_NAME + " INNER JOIN " +
-                        TransfersContract.CarsEntry.TABLE_NAME +
-                        " ON " + TransfersContract.CarsEntry.TABLE_NAME+
+                //transp=t1
+                //reg_cars=t2
+                //users=t3
+                TransfersContract.TransportsEntry.TABLE_NAME + " AS t1"+" INNER JOIN " +
+                        TransfersContract.CarsEntry.TABLE_NAME +" AS t2"+
+                        " ON " +"t2"+// TransfersContract.CarsEntry.TABLE_NAME+
                         "."+TransfersContract.CarsEntry._ID+
-                        " = "+TransfersContract.TransportsEntry.TABLE_NAME+
+                        " = "+"t1"+//TransfersContract.TransportsEntry.TABLE_NAME+
                         "."+TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID+" INNER JOIN " +
-                        TransfersContract.TransportsEntry.TABLE_NAME +
-                        " ON " + TransfersContract.TransportsEntry.TABLE_NAME+
-                        "."+TransfersContract.TransportsEntry.COLUMN_USER_ID+
-                        " = "+TransfersContract.UsersEntry.TABLE_NAME+
-                        "."+TransfersContract.UsersEntry._ID);
+                        TransfersContract.UsersEntry.TABLE_NAME+" AS t3"+
+                        //TransfersContract.TransportsEntry.TABLE_NAME +
+                        " ON " + "t3"+"."+TransfersContract.UsersEntry._ID+//TransfersContract.TransportsEntry.TABLE_NAME++
+                        " = "+"t2"+//
+                        "."+TransfersContract.CarsEntry.COLUMN_DRIVER_ID);
+
+
+    }
+
+    private static final SQLiteQueryBuilder sSearchUsersFromTranspQueryBuilder;
+
+    static {
+        sSearchUsersFromTranspQueryBuilder=new SQLiteQueryBuilder();
+
+        sSearchUsersFromTranspQueryBuilder.setTables(TransfersContract.TransportsEntry.TABLE_NAME);
+
     }
 
     @Override
@@ -149,7 +164,7 @@ public class TransfersProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
-            case TRANSPORT_CHOOSE_I:{
+            case TRANSPORT_CHOOSE_I2:{
                 long _id = db.insert(TransfersContract.TransportsEntry.TABLE_NAME, TransfersContract.UsersEntry._ID, values);
                 if ( _id > 0 )
                     returnUri = TransfersContract.TransportsEntry.buildTranspUri(_id);
@@ -175,7 +190,9 @@ public class TransfersProvider extends ContentProvider {
         matcher.addURI(authority, TransfersContract.PATH_TRANSP, TRANSPORT_CHOOSE_I);
         matcher.addURI(authority, TransfersContract.PATH_USERS + "/#", USER_PROFILE_S);
         matcher.addURI(authority, TransfersContract.PATH_REG_CARS + "/#/#/#/#/#", TRANSPORT_DATA_S);
-        matcher.addURI(authority, TransfersContract.PATH_TRANSP + "/#/#", TRANSPORT_CHOOSE_S);
+        matcher.addURI(authority, TransfersContract.PATH_TRANSP + "/#", TRANSPORT_CHOOSE_S);
+        matcher.addURI(authority, TransfersContract.PATH_TRANSP , TRANSPORT_USERS_S);
+        matcher.addURI(authority, TransfersContract.PATH_TRANSP+"/#/#",TRANSPORT_CHOOSE_I2);
 
         return matcher;
     }
@@ -197,10 +214,13 @@ public class TransfersProvider extends ContentProvider {
 //                    TransfersContract.CarsEntry.COLUMN_PEOPLE_REG;
 
     private static final String sGetTransport =
-            TransfersContract.TransportsEntry.TABLE_NAME +
-                    "." + TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID+ " = ? AND " +
-                    TransfersContract.TransportsEntry.TABLE_NAME +
+            //TransfersContract.TransportsEntry.TABLE_NAME +
+            "t1."+
                     TransfersContract.TransportsEntry.COLUMN_USER_ID + " = ? ";
+
+    private static final String sGetUsersFromTransport =
+            //TransfersContract.TransportsEntry.TABLE_NAME +
+                    TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID + " = ? ";
 
     private static final String sUser =
             TransfersContract.UsersEntry.TABLE_NAME+
@@ -234,6 +254,19 @@ public class TransfersProvider extends ContentProvider {
                 retCursor = getCarsFromSearch(uri, projection, sortOrder);
                 break;
             }
+            case TRANSPORT_USERS_S:
+            {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        TransfersContract.TransportsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             case USER_PROFILE_I: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         TransfersContract.UsersEntry.TABLE_NAME,
@@ -259,13 +292,12 @@ public class TransfersProvider extends ContentProvider {
 
     private Cursor getTransportStatus(Uri uri, String[] projection, String sortOrder) {
 
-        int reg_car= TransfersContract.TransportsEntry.getRegCarIdFromUri(uri);
         int user_id = TransfersContract.TransportsEntry.getUserIdFromUri(uri);
 
         return sSearchTranspStatusQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sGetTransport,
-                new String[]{String.valueOf(reg_car),String.valueOf(user_id)},
+                new String[]{String.valueOf(user_id)},
                 null,
                 null,
                 sortOrder
