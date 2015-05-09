@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements MainFragment.Callback{
+
 
 
     private BroadcastReceiver brRe=new BroadcastReceiver() {
@@ -25,6 +25,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
     static boolean mTwoPane;
     private String OWNACARFRAGMENT_TAG="OAC";
     private String SEARCHACARFRAGMENT_TAG="SAC";
+    private String MANAGEFRAGMENT_TAG = "MAN";
     private String username;
 
     @Override
@@ -113,7 +114,11 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
         }
 
         else if(text.equals(getString(R.string.manageTrans))) {
-            Toast.makeText(getApplication(),"Function not supported yet!",Toast.LENGTH_LONG).show();
+            //.makeText(getApplication(),"Function not supported yet!",Toast.LENGTH_LONG).show();
+            ManageTransportationsFragment fragment = new ManageTransportationsFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment, MANAGEFRAGMENT_TAG)
+                    .commit();
         }
 
     }
