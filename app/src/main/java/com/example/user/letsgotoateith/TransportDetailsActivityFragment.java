@@ -45,6 +45,8 @@ public class TransportDetailsActivityFragment extends Fragment {
     private ArrayAdapter<String> myAdapter;
     private android.widget.ListView results;
     private Intent intent;
+    private SharedPreferences prefs1;
+    private SharedPreferences.Editor editor1;
 
 
     public TransportDetailsActivityFragment() {
@@ -53,22 +55,34 @@ public class TransportDetailsActivityFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore last state for checked position.
-            usid = savedInstanceState.getStringArray("userids");
-        }
+//        intent = getActivity().getIntent();
+//        if (savedInstanceState != null) {
+//            // Restore last state for checked position.
+//            usid = savedInstanceState.getStringArray("userids");
+//        }
+//        else
+//            usid=intent.getStringArrayExtra(Constants.EXTRA_ARRAY);
+
+        prefs1=getActivity().getSharedPreferences(getString(R.string.pref_key2), Context.MODE_PRIVATE);
+        editor1=prefs1.edit();
+
+        int size = prefs1.getInt("array_size", 0);
+        usid = new String[size];
+        for(int i=0; i<size; i++)
+            usid[i]=prefs1.getString("array_" + i, null);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-       View rootView=inflater.inflate(R.layout.fragment_transport_details, container, false);
-        intent = getActivity().getIntent();
-        if(intent!=null){
 
-            usid=intent.getStringArrayExtra(Constants.EXTRA_ARRAY);
-        }
-        checkUser();
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+       View rootView=inflater.inflate(R.layout.fragment_transport_details, container, false);
+
+
+
+
+            checkUser();
+
         results = (ListView) rootView.findViewById(R.id.resultListview);
         TextView textView2 = new TextView(getActivity());
         textView2.setText("Users in Transport");
@@ -97,7 +111,7 @@ public class TransportDetailsActivityFragment extends Fragment {
         results.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                if(intent.getBooleanExtra(Constants.EXTRA_ISDRIVER,false)) {
+                if(prefs1.getBoolean(Constants.EXTRA_ISDRIVER,false)) {
                     if (usersCopy[position - 1][13].equals(Integer.toString(getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555)))) {
                         Dialog dialog = new Dialog(getActivity(), getString(R.string.deleteTransportTitle), getString(R.string.deleteTransport));
                         dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
@@ -107,11 +121,17 @@ public class TransportDetailsActivityFragment extends Fragment {
                                 Log.v("On Long Click", "On Long Click");
                                 getActivity().getContentResolver().delete(Uri.parse(TransfersContract.CarsEntry.CONTENT_URI + "/0/0/0/0/0"),
                                             TransfersContract.CarsEntry._ID + " = ? ",
-                                        new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID)});
+                                        new String[]{prefs1.getString(Constants.EXTRA_REGCARID, null)});
 
                                 myAdapter.notifyDataSetChanged();
 
-                                getActivity().finish();
+//                                getActivity().finish();
+
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.setAction("com.package.ACTION_REFRESH");
+                                getActivity().sendBroadcast(broadcastIntent);
+                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                startActivity(it);
                             }
                         });
 
@@ -128,10 +148,15 @@ public class TransportDetailsActivityFragment extends Fragment {
                                 getActivity().getContentResolver().delete(Uri.parse(TransfersContract.TransportsEntry.CONTENT_URI + "/0"),
                                         TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID + " = ? AND " +
                                                 TransfersContract.TransportsEntry.COLUMN_USER_ID + " = ? ",
-                                        new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID), usersCopy[position - 1][13]});
+                                        new String[]{prefs1.getString(Constants.EXTRA_REGCARID, null), usersCopy[position - 1][13]});
 
                                 myAdapter.notifyDataSetChanged();
-                                getActivity().finish();
+//                                getActivity().finish();
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.setAction("com.package.ACTION_REFRESH");
+                                getActivity().sendBroadcast(broadcastIntent);
+                                Intent it = new Intent(getActivity(), MainActivity.class);
+                                startActivity(it);
                             }
                         });
                         dialog.addCancelButton(getString(R.string.dialogCancel));
@@ -148,10 +173,16 @@ public class TransportDetailsActivityFragment extends Fragment {
                             getActivity().getContentResolver().delete(Uri.parse(TransfersContract.TransportsEntry.CONTENT_URI + "/0"),
                                     TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID + " = ? AND " +
                                             TransfersContract.TransportsEntry.COLUMN_USER_ID + " = ? ",
-                                    new String[]{intent.getStringExtra(Constants.EXTRA_REGCARID), usersCopy[position - 1][13]});
+                                    new String[]{prefs1.getString(Constants.EXTRA_REGCARID, null), usersCopy[position - 1][13]});
 
                             myAdapter.notifyDataSetChanged();
-                            getActivity().finish();
+
+                            Intent broadcastIntent = new Intent();
+                            broadcastIntent.setAction("com.package.ACTION_REFRESH");
+                            getActivity().sendBroadcast(broadcastIntent);
+                            Intent it = new Intent(getActivity(), MainActivity.class);
+                            startActivity(it);
+//                            getActivity().finish();
                         }
                     });
                     dialog.addCancelButton(getString(R.string.dialogCancel));
@@ -185,7 +216,9 @@ public class TransportDetailsActivityFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                myAdapter.clear();
                 if (data.moveToFirst()) {
+
                     String[] tempAreaSpinnerValues = getResources().getStringArray(R.array.areaSpinner);
                     usersCopy = new String[data.getCount()][14];
                     data.moveToFirst();
@@ -223,24 +256,24 @@ public class TransportDetailsActivityFragment extends Fragment {
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        savedInstanceState.putStringArray("userids", usid);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+//        // Save UI state changes to the savedInstanceState.
+//        // This bundle will be passed to onCreate if the process is
+//        // killed and restarted.
+//        savedInstanceState.putStringArray("userids", usid);
+//    }
 
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore last state for checked position.
-            usid = savedInstanceState.getStringArray("userids");
-        }
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (savedInstanceState != null) {
+//            // Restore last state for checked position.
+//            usid = savedInstanceState.getStringArray("userids");
+//        }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

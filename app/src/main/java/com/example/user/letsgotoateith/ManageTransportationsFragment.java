@@ -60,6 +60,9 @@ public class ManageTransportationsFragment extends Fragment {
     private final int INDEXfullname=19;
     private String userIDS[];
     private boolean flagDr, flagPass;
+    private SharedPreferences prefs1;
+    private SharedPreferences.Editor editor1;
+
     public ManageTransportationsFragment() {
     }
 
@@ -70,7 +73,8 @@ public class ManageTransportationsFragment extends Fragment {
 
         flagDr=true;
         flagPass=true;
-
+        prefs1=getActivity().getSharedPreferences(getString(R.string.pref_key2), Context.MODE_PRIVATE);
+        editor1=prefs1.edit();
         resultsPass = (ListView) rootView.findViewById(R.id.resultListviewPass);
 
         TextView textView1 = new TextView(getActivity());
@@ -85,16 +89,6 @@ public class ManageTransportationsFragment extends Fragment {
         resultsPass.addHeaderView(textView2);
         resultsPass.setAdapter(myAdapterPass);
 
-        resultsPass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0) {
-                    if(!flagPass)
-                        findUsersInTransport(transpTempPass[position - 1][16]);
-                }
-            }
-        });
-
         resultsDriver = (ListView) rootView.findViewById(R.id.resultListviewDr);
         myAdapterDriver = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1,
@@ -104,14 +98,26 @@ public class ManageTransportationsFragment extends Fragment {
 
         findUserTransports();
 
+        resultsPass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    if (!flagPass) {
+                        Log.v("Temp ID", transpTempPass[position - 1][16]);
+                        findUsersInTransport(transpTempPass[position - 1][16], false);
+                    }
+                }
+            }
+        });
+
         resultsDriver.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Log.v("Position","Position "+position);
-                if(position>0) {
-                    if(!flagDr) {
+                if (position > 0) {
+                    if (!flagDr) {
 
-                        findUsersInTransport(transpTempDr[position - 1][16]);
+                        findUsersInTransport(transpTempDr[position - 1][16], true);
                     }
                 }
             }
@@ -121,7 +127,7 @@ public class ManageTransportationsFragment extends Fragment {
         return rootView;
     }
 
-    private void findUsersInTransport(final String reg_car_id) {
+    private void findUsersInTransport(final String reg_car_id1, final boolean isDriver) {
         getLoaderManager().destroyLoader(USERS_QUERY_LOADER);
         getLoaderManager().initLoader(USERS_QUERY_LOADER,null,new LoaderManager.LoaderCallbacks<Cursor>(){
 
@@ -132,7 +138,7 @@ public class ManageTransportationsFragment extends Fragment {
                         uri,
                         new String[]{TransfersContract.TransportsEntry.COLUMN_USER_ID},
                         TransfersContract.TransportsEntry.COLUMN_REG_CAR_ID+" = ?",
-                        new String[]{reg_car_id},
+                        new String[]{reg_car_id1},
                         null);
             }
 
@@ -147,12 +153,19 @@ public class ManageTransportationsFragment extends Fragment {
                         count++;
                     }while(data.moveToNext());
                     Intent intent = new Intent(getActivity(), TransportDetailsActivity.class);
-                    intent.putExtra(Constants.EXTRA_ARRAY, userIDS);
-                    intent.putExtra(Constants.EXTRA_REGCARID,reg_car_id);
-                    intent.putExtra(Constants.EXTRA_ISDRIVER,!flagDr);
+//                    intent.putExtra(Constants.EXTRA_ARRAY, userIDS);
+//                    intent.putExtra(Constants.EXTRA_REGCARID,reg_car_id);
+//                    intent.putExtra(Constants.EXTRA_ISDRIVER,!flagDr);
+
+                    editor1.putString(Constants.EXTRA_REGCARID, reg_car_id1);
+                    editor1.putBoolean(Constants.EXTRA_ISDRIVER, isDriver);
+                    editor1.putInt("array_size", userIDS.length);
+                    for(int i=0;i<userIDS.length; i++)
+                        editor1.putString("array_" + i, userIDS[i]);
+                    editor1.commit();
                     startActivity(intent);
                 }
-                Log.v("Position","Position "+reg_car_id);
+                Log.v("Position","Position "+reg_car_id1);
             }
 
             @Override
@@ -179,8 +192,11 @@ public class ManageTransportationsFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                myAdapterPass.clear();
+                myAdapterDriver.clear();
                 //String temp[] = new String[20];
-                int count = 0;
+                int countDr = 0;
+                int countPass = 0;
 
                 String[] tempTimeSpinnerValues = getResources().getStringArray(R.array.timeSpinner);
                 String[] tempFreqSpinnerValues = getResources().getStringArray(R.array.freqSpinner);
@@ -195,79 +211,79 @@ public class ManageTransportationsFragment extends Fragment {
                     do {
                         if(data.getInt(INDEXdriver_id)==getActivity().getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE).getInt(Constants.EXTRA_USERID, -5555)) {
 
-                            transpTempDr[count][0] = "Day: ";
-                            transpTempDr[count][1] = tempDaySpinnerValues[data.getInt(INDEXday)];
-                            transpTempDr[count][2] = " | Departure time: ";
-                            transpTempDr[count][3] = tempTimeSpinnerValues[data.getInt(INDEXdep_time)];
-                            transpTempDr[count][4] = " | Return time: ";
-                            transpTempDr[count][5] = tempTimeSpinnerValues[data.getInt(INDEXret_time)];
-                            transpTempDr[count][6] = " | Frequency: ";
-                            transpTempDr[count][7] = tempFreqSpinnerValues[data.getInt(INDEXfreq)];
-                            transpTempDr[count][8] = " | Area: ";
-                            transpTempDr[count][9] = tempAreaSpinnerValues[data.getInt(INDEXarea)];
-                            transpTempDr[count][10] =" | People Registered: ";
-                            transpTempDr[count][11] =String.valueOf(data.getInt(INDEXpeople_reg));
+                            transpTempDr[countDr][0] = "Day: ";
+                            transpTempDr[countDr][1] = tempDaySpinnerValues[data.getInt(INDEXday)];
+                            transpTempDr[countDr][2] = " | Departure time: ";
+                            transpTempDr[countDr][3] = tempTimeSpinnerValues[data.getInt(INDEXdep_time)];
+                            transpTempDr[countDr][4] = " | Return time: ";
+                            transpTempDr[countDr][5] = tempTimeSpinnerValues[data.getInt(INDEXret_time)];
+                            transpTempDr[countDr][6] = " | Frequency: ";
+                            transpTempDr[countDr][7] = tempFreqSpinnerValues[data.getInt(INDEXfreq)];
+                            transpTempDr[countDr][8] = " | Area: ";
+                            transpTempDr[countDr][9] = tempAreaSpinnerValues[data.getInt(INDEXarea)];
+                            transpTempDr[countDr][10] =" | People Registered: ";
+                            transpTempDr[countDr][11] =String.valueOf(data.getInt(INDEXpeople_reg));
 
-                            transpTempDr[count][12]=data.getString(INDEXreg_car_idtransp);
-                            transpTempDr[count][13]=data.getString(INDEXconfirmed_u);
-                            transpTempDr[count][14]=data.getString(INDEXconfirmed_d);
-                            transpTempDr[count][15]=data.getString(INDEXuser_idtransp);
-                            transpTempDr[count][16]=data.getString(INDEXregcar_id);
-                            transpTempDr[count][17]=data.getString(INDEXpeople);
-                            transpTempDr[count][18]=data.getString(INDEXdriver_id);
-                            transpTempDr[count][19]=data.getString(INDEXusername);
-                            transpTempDr[count][20]=data.getString(INDEXuserarea);
-                            transpTempDr[count][21]=data.getString(INDEXschool);
-                            transpTempDr[count][22]=data.getString(INDEXuser_id);
-                            transpTempDr[count][23]=data.getString(INDEXemail);
-                            transpTempDr[count][24]=data.getString(INDEXfb);
-                            transpTempDr[count][25]=data.getString(INDEXfullname);
+                            transpTempDr[countDr][12]=data.getString(INDEXreg_car_idtransp);
+                            transpTempDr[countDr][13]=data.getString(INDEXconfirmed_u);
+                            transpTempDr[countDr][14]=data.getString(INDEXconfirmed_d);
+                            transpTempDr[countDr][15]=data.getString(INDEXuser_idtransp);
+                            transpTempDr[countDr][16]=data.getString(INDEXregcar_id);
+                            transpTempDr[countDr][17]=data.getString(INDEXpeople);
+                            transpTempDr[countDr][18]=data.getString(INDEXdriver_id);
+                            transpTempDr[countDr][19]=data.getString(INDEXusername);
+                            transpTempDr[countDr][20]=data.getString(INDEXuserarea);
+                            transpTempDr[countDr][21]=data.getString(INDEXschool);
+                            transpTempDr[countDr][22]=data.getString(INDEXuser_id);
+                            transpTempDr[countDr][23]=data.getString(INDEXemail);
+                            transpTempDr[countDr][24]=data.getString(INDEXfb);
+                            transpTempDr[countDr][25]=data.getString(INDEXfullname);
 
 
                             flagDr=false;
 
 
-                            Log.v("Query Result", "Query Result: " + printArray(transpTempDr,count,9));
+                            Log.v("Query Result", "Query Result: " + printArray(transpTempDr,countDr,9));
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-                            myAdapterDriver.add(printArray(transpTempDr,count,12));
-                            count++;
+                            myAdapterDriver.add(printArray(transpTempDr,countDr,12));
+                            countDr++;
                         }
                         else{
-                            transpTempPass[count][0] = "Driver's name: ";
-                            transpTempPass[count][1] = data.getString(INDEXfullname);
-                            transpTempPass[count][2] = " | Day: ";
-                            transpTempPass[count][3] = tempDaySpinnerValues[data.getInt(INDEXday)];
-                            transpTempPass[count][4] = " | Departure time: ";
-                            transpTempPass[count][5] = tempTimeSpinnerValues[data.getInt(INDEXdep_time)];
-                            transpTempPass[count][6] = " | Return time: ";
-                            transpTempPass[count][7] = tempTimeSpinnerValues[data.getInt(INDEXret_time)];
-                            transpTempPass[count][8] = " | Frequency: ";
-                            transpTempPass[count][9] = tempFreqSpinnerValues[data.getInt(INDEXfreq)];
-                            transpTempPass[count][10] = " | Area: ";
-                            transpTempPass[count][11] = tempAreaSpinnerValues[data.getInt(INDEXarea)];
+                            transpTempPass[countPass][0] = "Driver's name: ";
+                            transpTempPass[countPass][1] = data.getString(INDEXfullname);
+                            transpTempPass[countPass][2] = " | Day: ";
+                            transpTempPass[countPass][3] = tempDaySpinnerValues[data.getInt(INDEXday)];
+                            transpTempPass[countPass][4] = " | Departure time: ";
+                            transpTempPass[countPass][5] = tempTimeSpinnerValues[data.getInt(INDEXdep_time)];
+                            transpTempPass[countPass][6] = " | Return time: ";
+                            transpTempPass[countPass][7] = tempTimeSpinnerValues[data.getInt(INDEXret_time)];
+                            transpTempPass[countPass][8] = " | Frequency: ";
+                            transpTempPass[countPass][9] = tempFreqSpinnerValues[data.getInt(INDEXfreq)];
+                            transpTempPass[countPass][10] = " | Area: ";
+                            transpTempPass[countPass][11] = tempAreaSpinnerValues[data.getInt(INDEXarea)];
 
-                            transpTempPass[count][12]=data.getString(INDEXreg_car_idtransp);
-                            transpTempPass[count][13]=data.getString(INDEXconfirmed_u);
-                            transpTempPass[count][14]=data.getString(INDEXconfirmed_d);
-                            transpTempPass[count][15]=data.getString(INDEXuser_idtransp);
-                            transpTempPass[count][16]=data.getString(INDEXregcar_id);
-                            transpTempPass[count][17]=data.getString(INDEXpeople);
-                            transpTempPass[count][18]=data.getString(INDEXdriver_id);
-                            transpTempPass[count][19]=data.getString(INDEXusername);
-                            transpTempPass[count][20]=data.getString(INDEXuserarea);
-                            transpTempPass[count][21]=data.getString(INDEXschool);
-                            transpTempPass[count][22]=data.getString(INDEXuser_id);
-                            transpTempPass[count][23]=data.getString(INDEXemail);
-                            transpTempPass[count][24]=data.getString(INDEXfb);
-                            transpTempPass[count][25]=data.getString(INDEXpeople_reg);
+                            transpTempPass[countPass][12]=data.getString(INDEXreg_car_idtransp);
+                            transpTempPass[countPass][13]=data.getString(INDEXconfirmed_u);
+                            transpTempPass[countPass][14]=data.getString(INDEXconfirmed_d);
+                            transpTempPass[countPass][15]=data.getString(INDEXuser_idtransp);
+                            transpTempPass[countPass][16]=data.getString(INDEXregcar_id);
+                            transpTempPass[countPass][17]=data.getString(INDEXpeople);
+                            transpTempPass[countPass][18]=data.getString(INDEXdriver_id);
+                            transpTempPass[countPass][19]=data.getString(INDEXusername);
+                            transpTempPass[countPass][20]=data.getString(INDEXuserarea);
+                            transpTempPass[countPass][21]=data.getString(INDEXschool);
+                            transpTempPass[countPass][22]=data.getString(INDEXuser_id);
+                            transpTempPass[countPass][23]=data.getString(INDEXemail);
+                            transpTempPass[countPass][24]=data.getString(INDEXfb);
+                            transpTempPass[countPass][25]=data.getString(INDEXpeople_reg);
 
                             flagPass=false;
 
-                            Log.v("Query Result", "Query Result: " + printArray(transpTempPass,count,11));
+                            Log.v("Query Result", "Query Result: " + printArray(transpTempPass,countPass,11));
 
-                            myAdapterPass.add(printArray(transpTempPass, count, 12));
-                            count++;
+                            myAdapterPass.add(printArray(transpTempPass, countPass, 12));
+                            countPass++;
                         }
 
                     } while (data.moveToNext());
@@ -275,7 +291,7 @@ public class ManageTransportationsFragment extends Fragment {
                         myAdapterDriver.add("No registered transports as a driver");
                 }
                 if (flagPass)
-                    myAdapterPass.add("You haven't registerd in any transports yet!");
+                    myAdapterPass.add("You haven't registered in any transports yet!");
 
             }
 

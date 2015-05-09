@@ -157,7 +157,7 @@
             app:spn_arrowAnimDuration="10"
             app:spn_dividerAnimDuration="10"
             app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="5dp"/>
 
         <!--<Spinner-->
         <!--android:layout_width="wrap_content"-->

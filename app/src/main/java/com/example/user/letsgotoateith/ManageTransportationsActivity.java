@@ -20,6 +20,14 @@ public class ManageTransportationsActivity extends ActionBarActivity {
         }
     };
 
+    private BroadcastReceiver brRe1=new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            Log.d("onReceive", "Refresh in progress");
+            //At this point you should start the login activity and finish this one
+            finish();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,10 @@ public class ManageTransportationsActivity extends ActionBarActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
         registerReceiver(brRe, intentFilter);
+
+        IntentFilter intentFilter1 = new IntentFilter();
+        intentFilter1.addAction("com.package.ACTION_REFRESH");
+        registerReceiver(brRe1, intentFilter1);
     }
 
 
@@ -57,5 +69,6 @@ public class ManageTransportationsActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(brRe);
+        unregisterReceiver(brRe1);
     }
 }

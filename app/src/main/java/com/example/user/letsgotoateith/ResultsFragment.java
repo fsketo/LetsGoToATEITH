@@ -56,6 +56,7 @@ public class ResultsFragment extends Fragment {
     private static final int INDEX_DRIVER_ID = 7;
     private static final int INDEX_AREA = 8;
     private static final int INDEX_ID=0;
+    private boolean already;
 
 
     public ResultsFragment() {
@@ -69,6 +70,7 @@ public class ResultsFragment extends Fragment {
     }
 
     public void onCreate(Bundle savedInstanceState) {
+        already=false;
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -118,7 +120,10 @@ public class ResultsFragment extends Fragment {
                     new ArrayList());
 
             results.setAdapter(myAdapter);
-            findCars();
+            if (!already) {
+                findCars();
+            }
+
 
             results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -181,7 +186,9 @@ public class ResultsFragment extends Fragment {
                     String[] tempDaySpinnerValues = getResources().getStringArray(R.array.weekDaySpinner);
                     String[] tempAreaSpinnerValues = getResources().getStringArray(R.array.areaSpinner);
                     Log.v("Results count","Results count: "+data.getCount());
+                    myAdapter.clear();
                     if (data.moveToFirst()) {
+
                         idTemp = new String[data.getCount()][3];
                         data.moveToFirst();
                         do {

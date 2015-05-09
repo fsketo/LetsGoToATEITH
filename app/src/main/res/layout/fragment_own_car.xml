@@ -44,8 +44,7 @@
                     app:spn_arrowSwitchMode="true"
                     app:spn_arrowAnimDuration="10"
                     app:spn_dividerAnimDuration="10"
-                    app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"
-                    android:layout_marginLeft="5dp"/>
+                    app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"/>
                 <!--<Spinner-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
@@ -84,7 +83,7 @@
                 app:spn_arrowAnimDuration="10"
                 app:spn_dividerAnimDuration="10"
                 app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="5dp"/>
         <!--<Spinner-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -197,8 +196,7 @@
             app:spn_arrowSwitchMode="true"
             app:spn_arrowAnimDuration="10"
             app:spn_dividerAnimDuration="10"
-            app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"
-            android:layout_marginLeft="16dp"/>
+            app:spn_arrowInterpolator="@android:anim/decelerate_interpolator" />
 
         <!--<Spinner-->
             <!--android:layout_width="wrap_content"-->
