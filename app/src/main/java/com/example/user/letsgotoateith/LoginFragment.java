@@ -123,7 +123,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void checkUser(){
-
+        getLoaderManager().destroyLoader(QUERY_LOADER);
         getLoaderManager().initLoader(QUERY_LOADER, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {

@@ -246,7 +246,7 @@ public class ManageTransportationsFragment extends Fragment {
                             Log.v("Query Result", "Query Result: " + printArray(transpTempDr,countDr,9));
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-                            myAdapterDriver.add(printArray(transpTempDr,countDr,12));
+                            myAdapterDriver.add(printArray(transpTempDr,countDr,10));
                             countDr++;
                         }
                         else{

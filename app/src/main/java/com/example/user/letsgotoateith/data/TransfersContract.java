@@ -209,6 +209,9 @@ public class TransfersContract {
             return Integer.parseInt(uri.getPathSegments().get(7));
         }
 
+        public static int getIdFromUri(Uri uri) {
+            return Integer.parseInt(uri.getPathSegments().get(6));
+        }
     }
 
     public static final class TransportsEntry implements BaseColumns {

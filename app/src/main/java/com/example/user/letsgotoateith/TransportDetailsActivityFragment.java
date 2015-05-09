@@ -130,8 +130,8 @@ public class TransportDetailsActivityFragment extends Fragment {
                                 Intent broadcastIntent = new Intent();
                                 broadcastIntent.setAction("com.package.ACTION_REFRESH");
                                 getActivity().sendBroadcast(broadcastIntent);
-                                Intent it = new Intent(getActivity(), MainActivity.class);
-                                startActivity(it);
+//                                Intent it = new Intent(getActivity(), MainActivity.class);
+//                                startActivity(it);
                             }
                         });
 
@@ -155,8 +155,8 @@ public class TransportDetailsActivityFragment extends Fragment {
                                 Intent broadcastIntent = new Intent();
                                 broadcastIntent.setAction("com.package.ACTION_REFRESH");
                                 getActivity().sendBroadcast(broadcastIntent);
-                                Intent it = new Intent(getActivity(), MainActivity.class);
-                                startActivity(it);
+//                                Intent it = new Intent(getActivity(), MainActivity.class);
+//                                startActivity(it);
                             }
                         });
                         dialog.addCancelButton(getString(R.string.dialogCancel));
@@ -180,8 +180,8 @@ public class TransportDetailsActivityFragment extends Fragment {
                             Intent broadcastIntent = new Intent();
                             broadcastIntent.setAction("com.package.ACTION_REFRESH");
                             getActivity().sendBroadcast(broadcastIntent);
-                            Intent it = new Intent(getActivity(), MainActivity.class);
-                            startActivity(it);
+//                            Intent it = new Intent(getActivity(), MainActivity.class);
+//                            startActivity(it);
 //                            getActivity().finish();
                         }
                     });
