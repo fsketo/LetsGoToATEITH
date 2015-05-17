@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.user.letsgotoateith.R;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
-import static com.example.user.letsgotoateith.Utilities.printArray;
+import static com.fotistsalampounis.letsgotoateith.Utilities.printArray;
 
 
 /**
@@ -70,7 +71,7 @@ public class DisplayTranspUserRegActivityFragment extends Fragment {
                     intent.setType("text/html");
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[]{userdata[9]});
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Let's go to ATEITH");
-                    intent.putExtra(Intent.EXTRA_TEXT, printArray(userdata));
+                    intent.putExtra(Intent.EXTRA_TEXT, Utilities.printArray(userdata));
                     startActivity(Intent.createChooser(intent, "Send Email"));
 
                 } else if (position == 6) {

@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.example.user.letsgotoateith.R;
 import com.rey.material.widget.Spinner;
 
-import com.example.user.letsgotoateith.data.TransfersContract;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.SnackBar;
 

@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith.data;
+package com.fotistsalampounis.letsgotoateith.data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

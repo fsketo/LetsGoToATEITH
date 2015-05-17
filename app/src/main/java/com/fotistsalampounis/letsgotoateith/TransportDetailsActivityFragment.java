@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,13 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.user.letsgotoateith.data.TransfersContract;
+import com.example.user.letsgotoateith.R;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.widgets.Dialog;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
-import static com.example.user.letsgotoateith.Utilities.printArray;
+import static com.fotistsalampounis.letsgotoateith.Utilities.printArray;
 
 
 public class TransportDetailsActivityFragment extends Fragment {
@@ -238,7 +239,7 @@ public class TransportDetailsActivityFragment extends Fragment {
                         usersCopy[count][11] = data.getString(INDEX_fb);
                         usersCopy[count][12] = " User ID: ";
                         usersCopy[count][13] = data.getString(INDEX_id);
-                        myAdapter.add(printArray(usersCopy, count, 4));
+                        myAdapter.add(Utilities.printArray(usersCopy, count, 4));
                         count++;
                     } while (data.moveToNext());
 

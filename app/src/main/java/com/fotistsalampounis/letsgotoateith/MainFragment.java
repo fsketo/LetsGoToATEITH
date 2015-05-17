@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 /**
  * Created by user on 14/4/2015.
@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.user.letsgotoateith.R;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;

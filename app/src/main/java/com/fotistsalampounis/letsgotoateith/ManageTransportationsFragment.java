@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,12 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.user.letsgotoateith.data.TransfersContract;
+import com.example.user.letsgotoateith.R;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
-import static com.example.user.letsgotoateith.Utilities.printArray;
+import static com.fotistsalampounis.letsgotoateith.Utilities.printArray;
 
 
 public class ManageTransportationsFragment extends Fragment {
@@ -204,7 +205,7 @@ public class ManageTransportationsFragment extends Fragment {
                 String[] tempAreaSpinnerValues = getResources().getStringArray(R.array.areaSpinner);
                 if (data.moveToFirst()) {
                     String[] columnNames =data.getColumnNames();
-                    Log.v("Column names","Column names "+printArray(columnNames));
+                    Log.v("Column names","Column names "+ Utilities.printArray(columnNames));
                     transpTempDr = new String[data.getCount()][26];
                     transpTempPass = new String[data.getCount()][26];
                     data.moveToFirst();
@@ -243,10 +244,10 @@ public class ManageTransportationsFragment extends Fragment {
                             flagDr=false;
 
 
-                            Log.v("Query Result", "Query Result: " + printArray(transpTempDr,countDr,9));
+                            Log.v("Query Result", "Query Result: " + Utilities.printArray(transpTempDr, countDr, 9));
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-                            myAdapterDriver.add(printArray(transpTempDr,countDr,10));
+                            myAdapterDriver.add(Utilities.printArray(transpTempDr, countDr, 10));
                             countDr++;
                         }
                         else{
@@ -280,9 +281,9 @@ public class ManageTransportationsFragment extends Fragment {
 
                             flagPass=false;
 
-                            Log.v("Query Result", "Query Result: " + printArray(transpTempPass,countPass,11));
+                            Log.v("Query Result", "Query Result: " + Utilities.printArray(transpTempPass, countPass, 11));
 
-                            myAdapterPass.add(printArray(transpTempPass, countPass, 12));
+                            myAdapterPass.add(Utilities.printArray(transpTempPass, countPass, 12));
                             countPass++;
                         }
 

@@ -1,7 +1,9 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import com.example.user.letsgotoateith.R;
 
 
 public class RegisterActivity extends ActionBarActivity {

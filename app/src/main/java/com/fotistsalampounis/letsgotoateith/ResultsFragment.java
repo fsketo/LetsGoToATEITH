@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,13 +21,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.user.letsgotoateith.data.TransfersContract;
+import com.example.user.letsgotoateith.R;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.widgets.Dialog;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.ArrayList;
 
-import static com.example.user.letsgotoateith.Utilities.printArray;
+import static com.fotistsalampounis.letsgotoateith.Utilities.printArray;
 
 /**
  * Created by user on 28/4/2015.
@@ -214,10 +215,10 @@ public class ResultsFragment extends Fragment {
 
                             count++;
 
-                            Log.v("Query Result", "Query Result: " + printArray(temp));
+                            Log.v("Query Result", "Query Result: " + Utilities.printArray(temp));
 
                             //findName(data.getInt(INDEX_DRIVER_ID));
-                            myAdapter.add(printArray(temp));
+                            myAdapter.add(Utilities.printArray(temp));
 //                          myDataset.add(temp);
                             temp = new String[14];
                         } while (data.moveToNext());

@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 
+import com.example.user.letsgotoateith.R;
 
-public class DisplayTranspUserRegActivity extends ActionBarActivity {
+
+public class TransportDetailsActivity extends ActionBarActivity {
 
     private BroadcastReceiver brRe=new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -20,14 +22,26 @@ public class DisplayTranspUserRegActivity extends ActionBarActivity {
         }
     };
 
+    private BroadcastReceiver brRe1=new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            Log.d("onReceive", "Refresh in progress");
+            //At this point you should start the login activity and finish this one
+            finish();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_transp_user_reg);
+        setContentView(R.layout.activity_transport_details);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
         registerReceiver(brRe, intentFilter);
+
+        IntentFilter intentFilter1 = new IntentFilter();
+        intentFilter1.addAction("com.package.ACTION_REFRESH");
+        registerReceiver(brRe1, intentFilter1);
     }
 
 
@@ -57,5 +71,6 @@ public class DisplayTranspUserRegActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(brRe);
+        unregisterReceiver(brRe1);
     }
 }

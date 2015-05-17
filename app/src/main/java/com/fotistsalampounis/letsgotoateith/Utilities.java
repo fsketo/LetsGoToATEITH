@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 
+import com.example.user.letsgotoateith.R;
 import com.gc.materialdesign.widgets.SnackBar;
 
 /**

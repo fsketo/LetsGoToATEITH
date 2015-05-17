@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,8 +9,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 
+import com.example.user.letsgotoateith.R;
 
-public class ManageTransportationsActivity extends ActionBarActivity {
+
+public class SearchActivity extends ActionBarActivity {
 
     private BroadcastReceiver brRe=new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -20,27 +22,27 @@ public class ManageTransportationsActivity extends ActionBarActivity {
         }
     };
 
-    private BroadcastReceiver brRe1=new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            Log.d("onReceive", "Refresh in progress");
-            //At this point you should start the login activity and finish this one
-            finish();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_transportations);
+        setContentView(R.layout.activity_search);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new SearchFragment())
+                    .commit();
+        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.package.ACTION_LOGOUT");
         registerReceiver(brRe, intentFilter);
-
-        IntentFilter intentFilter1 = new IntentFilter();
-        intentFilter1.addAction("com.package.ACTION_REFRESH");
-        registerReceiver(brRe1, intentFilter1);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(brRe);
+    }
+
 
 
     @Override
@@ -58,17 +60,17 @@ public class ManageTransportationsActivity extends ActionBarActivity {
 //        int id = item.getItemId();
 //
 //        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
+//        if (id == R.id.action_logout) {
+//            Utilities.logout(getApplication().getActivity());
+////            SharedPreferences prefs=getApplication().getSharedPreferences("session", Context.MODE_PRIVATE);
+////            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplication());
+////            prefs.edit().putInt(getString(R.string.pref_id_key),-1);
+////            prefs.edit().putString(getString(R.string.pref_username_key),"-1");
+////            prefs.edit().apply();
+//              //finish();
 //        }
 //
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(brRe);
-        unregisterReceiver(brRe1);
-    }
 }

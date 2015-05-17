@@ -1,22 +1,20 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.example.user.letsgotoateith.R;
 
-public class LoginActivity extends ActionBarActivity {
-
-    private final String LOG_TAG = LoginActivity.class.getSimpleName();
+public class AboutActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.activity_about);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new LoginFragment())
+                    .add(R.id.container, new AboutFragment())
                     .commit();
         }
     }
@@ -25,7 +23,7 @@ public class LoginActivity extends ActionBarActivity {
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_login, menu);
+//        getMenuInflater().inflate(R.menu.menu_about, menu);
 //        return true;
 //    }
 

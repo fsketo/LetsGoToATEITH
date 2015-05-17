@@ -1,4 +1,4 @@
-package com.example.user.letsgotoateith;
+package com.fotistsalampounis.letsgotoateith;
 
 /**
  * Created by user on 14/4/2015.
@@ -19,7 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.user.letsgotoateith.data.TransfersContract;
+import com.example.user.letsgotoateith.R;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.rey.material.widget.EditText;
 

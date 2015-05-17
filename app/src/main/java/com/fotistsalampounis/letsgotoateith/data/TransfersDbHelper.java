@@ -1,11 +1,11 @@
-package com.example.user.letsgotoateith.data;
+package com.fotistsalampounis.letsgotoateith.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.user.letsgotoateith.data.TransfersContract.UsersEntry;
-import com.example.user.letsgotoateith.data.TransfersContract.CarsEntry;
-import com.example.user.letsgotoateith.data.TransfersContract.TransportsEntry;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract.UsersEntry;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract.CarsEntry;
+import com.fotistsalampounis.letsgotoateith.data.TransfersContract.TransportsEntry;
 
 /**
  * Created by user on 14/4/2015.
